@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Paramedic Learnings",
   description:
-    "A platform for ambulance personnel to share and learn from field experiences",
+    "A knowledge platform for ambulance personnel: capture and improve operational guidance with AI-assisted analysis and human approval.",
 };
 
 export default function RootLayout({
@@ -32,7 +32,6 @@ export default function RootLayout({
         <header className="border-b border-slate-200 bg-white">
           <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
             <a href="/" className="flex items-center gap-2">
-              <span className="text-2xl">🚑</span>
               <span className="text-lg font-bold text-slate-900">
                 Paramedic Learnings
               </span>

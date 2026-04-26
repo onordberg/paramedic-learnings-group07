@@ -1,8 +1,8 @@
-# 🚑 Paramedic Learnings
+# Paramedic Learnings
 
-A learning-sharing platform for ambulance personnel. Document field experiences and learnings so the whole team benefits from shared knowledge.
+A knowledge platform for ambulance personnel: capture and improve operational guidance ("topics") with AI-assisted analysis and human approval.
 
-> **Course project** — This app is used as a hands-on use case during a two-day agentic development course.
+> **Course project** — This repository is the empty starting point for a two-day agentic development course. The infrastructure (Next.js, Drizzle, Postgres, Tailwind, Zod) is wired up; the domain is yours to build. See [docs/user-stories.md](docs/user-stories.md) for the backlog.
 
 ## Getting Started
 
@@ -23,10 +23,6 @@ npm install
 # Set up environment
 cp .env.example .env.local
 # Edit .env.local with your DATABASE_URL if you're not using the included Docker setup
-
-# Generate and run migrations
-npx drizzle-kit generate
-npx drizzle-kit migrate
 
 # Start the dev server
 npm run dev

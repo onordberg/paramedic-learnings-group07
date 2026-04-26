@@ -155,18 +155,16 @@ Examples of roles that fit the course case:
 The following concepts can serve as a starting point for the data model and for course issues:
 
 - Topic
-- Topic Version
-- Source
-- Experience Report
-- Debrief Report
-- Research Finding
-- Meeting Note
-- Policy Change
-- Change Proposal
-- Approval
-- Notification
+- TopicVersion
+- Source — with a SourceType, for example: debrief report, research finding, meeting note, policy change, experience report
+- EvidenceLink (connects a source to a topic version)
+- ChangeProposal
+- ApprovalDecision
 - Subscription
+- Notification
 - Topic Owner
+
+Teams may choose different names, but the underlying concepts should remain recognizable.
 
 ## Example User Flow
 
@@ -190,4 +188,4 @@ The course focuses on:
 - solving issues with agentic tools and working methods
 - combining hands-on engineering with AI-supported analysis, implementation, and review
 
-See also [docs/course-setup.md](docs/course-setup.md), [docs/reference-specification.md](docs/reference-specification.md), and [docs/user-stories.md](docs/user-stories.md) for course-oriented material.
+See [user-stories.md](user-stories.md) for issue-ready user stories that can become GitHub Project items.
