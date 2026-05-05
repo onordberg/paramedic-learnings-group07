@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { AREA_COLORS } from "@/app/_lib/area-badge";
+import { getSubscriberCount } from "@/app/subscription-actions";
+import { SubscribeForm } from "@/app/_components/SubscribeForm";
 
 export default async function TopicPage({
   params,
@@ -12,11 +14,10 @@ export default async function TopicPage({
 }) {
   const { id } = await params;
 
-  const [topic] = await db
-    .select()
-    .from(topics)
-    .where(eq(topics.id, id))
-    .limit(1);
+  const [[topic], subscriberCount] = await Promise.all([
+    db.select().from(topics).where(eq(topics.id, id)).limit(1),
+    getSubscriberCount(id),
+  ]);
 
   if (!topic) notFound();
 
@@ -113,6 +114,9 @@ export default async function TopicPage({
               </div>
             </div>
           )}
+
+          {/* Subscribe (Story 7) */}
+          <SubscribeForm topicId={topic.id} subscriberCount={subscriberCount} />
         </div>
       </div>
     </div>

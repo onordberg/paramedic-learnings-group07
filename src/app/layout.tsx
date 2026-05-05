@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
+import { NotificationBadge } from "@/app/_components/NotificationBadge";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -50,6 +52,9 @@ export default function RootLayout({
               <Link href="/topics/new" className="win-menu-item">
                 <u>N</u>ew Topic
               </Link>
+              <Link href="/notifications" className="win-menu-item">
+                Notifications
+              </Link>
             </nav>
 
             {/* Page content */}
@@ -62,6 +67,9 @@ export default function RootLayout({
               <span className="win-status-panel" style={{ flex: 1 }}>
                 Ready
               </span>
+              <Suspense fallback={null}>
+                <NotificationBadge />
+              </Suspense>
               <span className="win-status-panel">Paramedic Learnings v1.0</span>
             </footer>
           </div>
