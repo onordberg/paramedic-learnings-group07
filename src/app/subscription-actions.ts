@@ -14,6 +14,7 @@ const SubscribeSchema = z.object({
 export type SubscribeState = {
   error?: string;
   success?: boolean;
+  email?: string;
 };
 
 export async function subscribeTopic(
@@ -34,7 +35,7 @@ export async function subscribeTopic(
     .onConflictDoNothing();
 
   revalidatePath(`/topics/${topicId}`);
-  return { success: true };
+  return { success: true, email };
 }
 
 export async function unsubscribeTopic(
