@@ -3,7 +3,12 @@
 import { useActionState, useEffect, useRef } from "react";
 import { createTopic, type CreateTopicState } from "@/app/actions";
 
+const AREAS = ["Clinical", "Operational", "Safety", "Administrative"] as const;
+
 const initialState: CreateTopicState = {};
+
+const fieldClass =
+  "border border-border rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-text-muted bg-surface-raised";
 
 export function NewTopicForm() {
   const [state, formAction, isPending] = useActionState(createTopic, initialState);
@@ -25,6 +30,21 @@ export function NewTopicForm() {
 
       <form ref={formRef} action={formAction} className="px-4 py-4 flex flex-col gap-4">
         <FormField label="Title" name="title" placeholder="e.g. Airway Management" />
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="area" className="text-xs text-text-muted uppercase tracking-wide">
+            Area
+          </label>
+          <select id="area" name="area" required className={fieldClass}>
+            <option value="">Select area…</option>
+            {AREAS.map((a) => (
+              <option key={a} value={a}>
+                {a}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <FormField
           label="Summary"
           name="summary"
@@ -36,6 +56,12 @@ export function NewTopicForm() {
           placeholder="Detailed operational guidance for this topic…"
           rows={5}
         />
+        <FormField
+          label="Rationale (optional)"
+          name="rationale"
+          placeholder="Why does this guidance exist? Evidence or context."
+          rows={3}
+        />
         <FormField label="Your name" name="createdBy" placeholder="e.g. Anna Larsen" />
 
         {state.error && (
@@ -43,7 +69,6 @@ export function NewTopicForm() {
             {state.error}
           </p>
         )}
-
         {state.success && (
           <p className="text-xs text-success bg-green-50 border border-green-200 rounded px-3 py-2">
             Topic created successfully.
@@ -73,8 +98,6 @@ function FormField({
   placeholder?: string;
   rows?: number;
 }) {
-  const baseClass =
-    "border border-border rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-text-muted bg-surface-raised";
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={name} className="text-xs text-text-muted uppercase tracking-wide">
@@ -86,7 +109,7 @@ function FormField({
           name={name}
           rows={rows}
           placeholder={placeholder}
-          className={`${baseClass} resize-none`}
+          className={`${fieldClass} resize-none`}
         />
       ) : (
         <input
@@ -94,7 +117,7 @@ function FormField({
           name={name}
           type="text"
           placeholder={placeholder}
-          className={baseClass}
+          className={fieldClass}
         />
       )}
     </div>

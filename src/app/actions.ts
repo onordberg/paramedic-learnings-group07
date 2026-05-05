@@ -3,14 +3,7 @@
 import { db } from "@/db";
 import { topics } from "@/db/schema";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
-
-const CreateTopicSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  summary: z.string().min(1, "Summary is required"),
-  guidance: z.string().min(1, "Guidance is required"),
-  createdBy: z.string().min(1, "Your name is required"),
-});
+import { CreateTopicSchema } from "@/app/_lib/create-topic-schema";
 
 export type CreateTopicState = {
   error?: string;
@@ -25,6 +18,8 @@ export async function createTopic(
     title: formData.get("title"),
     summary: formData.get("summary"),
     guidance: formData.get("guidance"),
+    rationale: formData.get("rationale") || undefined,
+    area: formData.get("area"),
     createdBy: formData.get("createdBy"),
   });
 
