@@ -1,0 +1,251 @@
+/*
+ * Windows 3.11 Component CSS
+ * Copy-paste reference for all standard Win3.11 UI classes.
+ * Core border mechanism and hex values are in SKILL.md.
+ */
+
+/* === WINDOW CHROME ===
+   Always wrap: win-raised-outer (outer) > win-raised (inner)
+
+   <div class="win-raised-outer">
+     <div class="win-raised" style="background:#c0c0c0">
+       <div class="win-titlebar">
+         <div class="win-titlebar-btn">─</div>
+         <span>Window Title</span>
+         <div style="display:flex;gap:2px">
+           <div class="win-titlebar-btn">▼</div>
+           <div class="win-titlebar-btn">▲</div>
+         </div>
+       </div>
+       <nav class="win-menubar">...</nav>
+       <main>...content...</main>
+       <footer class="win-statusbar">
+         <span class="win-status-panel" style="flex:1">Ready</span>
+       </footer>
+     </div>
+   </div>
+*/
+
+.win-raised-outer {
+  border: 2px solid;
+  border-color: #dfdfdf #404040 #404040 #dfdfdf;
+}
+
+.win-raised {
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}
+
+.win-sunken {
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+}
+
+.win-titlebar {
+  background: #000080; /* flat navy — no gradient */
+  color: #ffffff;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.win-titlebar-btn {
+  background: #c0c0c0;
+  color: #000000;
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  width: 16px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  cursor: default;
+}
+
+/* === MENU BAR === */
+
+.win-menubar {
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  gap: 0;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+}
+
+.win-menu-item {
+  padding: 3px 8px;
+  cursor: default;
+}
+
+.win-menu-item:hover {
+  background: #000080;
+  color: #ffffff;
+}
+
+/* === BUTTON === */
+
+.win-btn {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  border-radius: 0;  /* Win3.1 had no rounded corners */
+  padding: 4px 16px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  min-width: 75px;
+  cursor: default;
+}
+
+.win-btn:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 5px 15px 3px 17px; /* shift content 1px right-down on press */
+}
+
+.win-btn:focus {
+  outline: 1px dotted #000000;
+  outline-offset: -5px;
+}
+
+/* Default button (has extra outer black border, used for "OK" / primary action) */
+.win-btn-default {
+  border-color: #000000 #808080 #808080 #000000;
+}
+
+.win-btn-sm {
+  padding: 2px 8px;
+  min-width: 0;
+  font-size: 11px;
+}
+
+/* === TEXT INPUT / TEXTAREA === */
+
+.win-input {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  border-radius: 0;
+  padding: 2px 4px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  outline: none;
+  width: 100%;
+}
+
+/* === SELECT === */
+
+.win-select {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  border-radius: 0;
+  padding: 2px 4px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  cursor: default;
+}
+
+/* === LABEL === */
+
+.win-label {
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  color: #000000;
+  display: block;
+  margin-bottom: 2px;
+  cursor: default;
+}
+
+/* === LISTVIEW === */
+
+.win-listview {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  overflow: auto;
+}
+
+.win-listrow {
+  padding: 3px 6px;
+  border-bottom: 1px solid #e8e8e8;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  cursor: default;
+}
+
+.win-listrow:hover {
+  background: #000080;
+  color: #ffffff;
+}
+
+.win-listrow:hover * {
+  color: #ffffff !important;
+}
+
+/* === GROUPBOX === */
+
+.win-groupbox {
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 16px 8px 8px;
+  position: relative;
+  margin: 8px 0;
+}
+
+.win-groupbox-title {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  background: #c0c0c0;
+  padding: 0 4px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+}
+
+/* === STATUS BAR === */
+
+.win-statusbar {
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+}
+
+.win-status-panel {
+  border: 1px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 1px 6px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+}
+
+/* === SEPARATOR === */
+
+.win-separator {
+  border: 0;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  margin: 6px 0;
+}
+
+/* === SCROLLBARS (Chromium only) === */
+
+::-webkit-scrollbar { width: 17px; height: 17px; }
+
+::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  background-image: repeating-conic-gradient(#a0a0a0 0% 25%, #c0c0c0 0% 50%);
+  background-size: 4px 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}
