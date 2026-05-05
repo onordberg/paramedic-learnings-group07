@@ -9,6 +9,7 @@ const CreateTopicSchema = z.object({
   title: z.string().min(1, "Title is required"),
   summary: z.string().min(1, "Summary is required"),
   guidance: z.string().min(1, "Guidance is required"),
+  area: z.enum(["Clinical", "Operational", "Safety", "Administrative"]),
   createdBy: z.string().min(1, "Your name is required"),
 });
 
@@ -25,6 +26,7 @@ export async function createTopic(
     title: formData.get("title"),
     summary: formData.get("summary"),
     guidance: formData.get("guidance"),
+    area: formData.get("area"),
     createdBy: formData.get("createdBy"),
   });
 
