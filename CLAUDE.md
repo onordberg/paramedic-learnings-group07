@@ -21,6 +21,9 @@ npm run dev
 # Lint
 npm run lint
 
+# Run tests (Vitest + React Testing Library)
+npm test
+
 # Build for production
 npm run build
 ```
@@ -40,7 +43,11 @@ npx drizzle-kit migrate    # apply migrations to the database
 
 **App Router conventions** — pages go in `src/app/`, using Next.js file-based routing (`page.tsx`, `layout.tsx`, `route.ts` for API routes). Server Components are the default; add `"use client"` only where interactivity requires it.
 
-**Database layer** — `src/db/schema.ts` is the single source of truth for the data model (currently empty — Story 1 defines the first table). `src/db/index.ts` exports `db`, the Drizzle client, which reads `DATABASE_URL` from `.env.local`. The default Docker setup uses `postgresql://postgres:postgres@localhost:15432/paramedic_learnings`.
+**Next.js 16 async APIs** — `searchParams` and `params` in page components are `Promise`s; always `await` them. Client components calling `useSearchParams()` require a `<Suspense>` wrapper in the parent Server Component.
+
+**`"use server"` files** — may only export async functions. Exporting a Zod schema or any non-async value from a `"use server"` file causes a runtime crash. Put shared schemas/constants in `src/app/_lib/` instead.
+
+**Database layer** — `src/db/schema.ts` is the single source of truth for the data model. `src/db/index.ts` exports `db`, the Drizzle client, which reads `DATABASE_URL` from `.env.local`. The default Docker setup uses `postgresql://postgres:postgres@localhost:15432/paramedic_learnings`. When adding a `NOT NULL` column to a non-empty table, include `.default(...)` in both the schema and the migration SQL to avoid a constraint violation on existing rows.
 
 **Domain model** (from the user stories): the core entities are **topics** (operational guidance, versioned), **sources** (debrief reports, research findings), **change proposals** (AI-generated drafts linking sources to a topic update), and **approvals** (human decisions on proposals). Stories 1–6 establish topics; Stories 9–18 build the "AI proposes, human approves" loop.
 
