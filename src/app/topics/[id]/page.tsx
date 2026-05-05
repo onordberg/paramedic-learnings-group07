@@ -3,7 +3,7 @@ import { topics } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { AREA_BADGE } from "@/app/_lib/area-badge";
+import { AREA_COLORS } from "@/app/_lib/area-badge";
 
 export default async function TopicPage({
   params,
@@ -20,71 +20,101 @@ export default async function TopicPage({
 
   if (!topic) notFound();
 
+  const areaColor = AREA_COLORS[topic.area] ?? "#404040";
+
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
-      <Link
-        href="/"
-        className="text-xs text-primary hover:underline inline-flex items-center gap-1 mb-6"
-      >
-        ← All topics
-      </Link>
-
-      <div className="flex items-start justify-between gap-4 mb-3">
-        <h1 className="text-3xl font-bold tracking-tight text-text leading-tight">
-          {topic.title}
-        </h1>
-        <span
-          className={`text-xs font-medium px-2 py-0.5 rounded mt-2 flex-shrink-0 ${AREA_BADGE[topic.area] ?? "bg-slate-100 text-text-muted"}`}
-        >
-          {topic.area}
-        </span>
-      </div>
-
-      <div className="flex items-center gap-2 mb-6 pb-4 border-b border-border">
-        <span className="text-xs text-text-muted uppercase tracking-wide">
-          Owner: {topic.createdBy}
-        </span>
-        <span className="text-text-muted text-xs">·</span>
-        <span className="font-mono text-xs text-text-muted">
-          Updated {topic.updatedAt.toISOString().slice(0, 10)}
-        </span>
-        <span className="text-text-muted text-xs">·</span>
-        <span className="font-mono text-xs text-text-muted">
-          Created {topic.createdAt.toISOString().slice(0, 10)}
-        </span>
-      </div>
-
-      <div className="mb-6">
-        <p className="text-xs text-text-muted uppercase tracking-wide mb-2">
-          Summary
-        </p>
-        <p className="text-sm text-text leading-relaxed">{topic.summary}</p>
-      </div>
-
-      <hr className="border-border mb-6" />
-
-      <div className={topic.rationale ? "mb-6" : ""}>
-        <p className="text-xs text-text-muted uppercase tracking-wide mb-2">
-          Guidance
-        </p>
-        <p className="text-sm text-text leading-relaxed whitespace-pre-wrap">
-          {topic.guidance}
-        </p>
-      </div>
-
-      {topic.rationale && (
-        <>
-          <hr className="border-border mb-6" />
-          <div>
-            <p className="text-xs text-text-muted uppercase tracking-wide mb-2">
-              Rationale
-            </p>
-            <p className="text-sm text-text leading-relaxed whitespace-pre-wrap pl-3 border-l-2 border-primary">
-              {topic.rationale}
-            </p>
+    <div style={{ maxWidth: "700px" }}>
+      {/* Window chrome */}
+      <div className="win-raised" style={{ overflow: "hidden" }}>
+        <div className="win-titlebar">
+          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <div className="win-titlebar-btn" style={{ fontSize: "9px" }}>─</div>
+            <span>{topic.title}</span>
           </div>
-        </>
-      )}
+          <div style={{ display: "flex", gap: "2px" }}>
+            <div className="win-titlebar-btn">▼</div>
+            <div className="win-titlebar-btn">▲</div>
+          </div>
+        </div>
+
+        {/* Toolbar */}
+        <div style={{
+          background: "#c0c0c0",
+          borderBottom: "1px solid #808080",
+          padding: "4px 6px",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+        }}>
+          <Link href="/" className="win-btn win-btn-sm">
+            ← Back
+          </Link>
+          <div className="win-separator" style={{ width: "1px", height: "20px", margin: "0 2px" }} />
+          <span
+            style={{
+              fontSize: "10px",
+              padding: "2px 6px",
+              background: areaColor,
+              color: "#ffffff",
+              display: "inline-block",
+            }}
+          >
+            {topic.area}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div style={{ background: "#c0c0c0", padding: "12px" }}>
+
+          {/* Metadata */}
+          <div className="win-sunken" style={{ background: "#ffffff", padding: "4px 8px", marginBottom: "10px" }}>
+            <table style={{ fontSize: "11px", borderSpacing: "0 2px", width: "100%" }}>
+              <tbody>
+                <tr>
+                  <td style={{ color: "#808080", paddingRight: "12px", whiteSpace: "nowrap" }}>Created by:</td>
+                  <td>{topic.createdBy}</td>
+                  <td style={{ color: "#808080", paddingLeft: "16px", paddingRight: "12px", whiteSpace: "nowrap" }}>Created:</td>
+                  <td style={{ fontFamily: "monospace" }}>{topic.createdAt.toISOString().slice(0, 10)}</td>
+                </tr>
+                <tr>
+                  <td style={{ color: "#808080" }}>Area:</td>
+                  <td>{topic.area}</td>
+                  <td style={{ color: "#808080", paddingLeft: "16px" }}>Updated:</td>
+                  <td style={{ fontFamily: "monospace" }}>{topic.updatedAt.toISOString().slice(0, 10)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Summary */}
+          <div className="win-groupbox" style={{ marginTop: 0, marginBottom: "8px" }}>
+            <span className="win-groupbox-title">Summary</span>
+            <p style={{ fontSize: "11px" }}>{topic.summary}</p>
+          </div>
+
+          {/* Guidance */}
+          <div className="win-groupbox" style={{ marginBottom: "8px" }}>
+            <span className="win-groupbox-title">Guidance</span>
+            <div className="win-sunken" style={{ background: "#ffffff", padding: "6px 8px" }}>
+              <p style={{ fontSize: "11px", whiteSpace: "pre-wrap", lineHeight: "1.6" }}>
+                {topic.guidance}
+              </p>
+            </div>
+          </div>
+
+          {/* Rationale (optional) */}
+          {topic.rationale && (
+            <div className="win-groupbox" style={{ marginBottom: "8px" }}>
+              <span className="win-groupbox-title">Rationale</span>
+              <div className="win-sunken" style={{ background: "#ffffff", padding: "6px 8px" }}>
+                <p style={{ fontSize: "11px", whiteSpace: "pre-wrap", lineHeight: "1.6" }}>
+                  {topic.rationale}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

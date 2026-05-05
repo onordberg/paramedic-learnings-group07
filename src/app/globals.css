@@ -1,31 +1,313 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #c0c0c0;
+  --foreground: #000000;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@theme {
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-subtle: #eff6ff;
-  --color-surface: #f8fafc;
-  --color-surface-raised: #ffffff;
-  --color-border: #e2e8f0;
-  --color-text: #0f172a;
-  --color-text-muted: #64748b;
-  --color-danger: #dc2626;
-  --color-success: #16a34a;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #008080;
+  color: #000000;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* ── 3D Border Primitives ── */
+
+.win-raised {
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}
+
+.win-raised-outer {
+  border: 2px solid;
+  border-color: #dfdfdf #404040 #404040 #dfdfdf;
+}
+
+.win-sunken {
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+}
+
+.win-sunken-deep {
+  border: 2px solid;
+  border-color: #404040 #dfdfdf #dfdfdf #404040;
+}
+
+/* ── Window Chrome ── */
+
+.win-titlebar {
+  background: #000080;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 2px 2px 4px;
+  font-weight: bold;
+  font-size: 11px;
+  user-select: none;
+  cursor: default;
+  gap: 4px;
+}
+
+.win-titlebar-btn {
+  background: #c0c0c0;
+  color: #000000;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  width: 18px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.win-titlebar-btn:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+}
+
+/* ── Menu Bar ── */
+
+.win-menubar {
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  align-items: stretch;
+  font-size: 11px;
+}
+
+.win-menu-item {
+  padding: 3px 10px;
+  cursor: default;
+  color: #000000;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.win-menu-item:hover,
+.win-menu-item:focus {
+  background: #000080;
+  color: #ffffff;
+  outline: none;
+}
+
+/* ── Buttons ── */
+
+.win-btn {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  padding: 4px 16px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  color: #000000;
+  cursor: pointer;
+  min-width: 75px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.win-btn:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 5px 15px 3px 17px;
+}
+
+.win-btn:focus {
+  outline: 1px dotted #000000;
+  outline-offset: -5px;
+}
+
+.win-btn:disabled {
+  color: #808080;
+  text-shadow: 1px 1px 0 #ffffff;
+  cursor: not-allowed;
+}
+
+/* default button gets extra outer black border */
+.win-btn-default {
+  border-color: #000000 #808080 #808080 #000000;
+}
+
+.win-btn-default:active {
+  border-color: #808080 #000000 #000000 #808080;
+}
+
+/* small filter/tab button */
+.win-btn-sm {
+  min-width: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+.win-btn-active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 5px 15px 3px 17px;
+}
+
+/* ── Form Elements ── */
+
+.win-input {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 2px 4px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  color: #000000;
+  outline: none;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.win-input:focus {
+  border-color: #000080 #ffffff #ffffff #000080;
+}
+
+.win-label {
+  font-size: 11px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  color: #000000;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.win-select {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 2px 20px 2px 4px;
+  font-family: 'MS Sans Serif', Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  color: #000000;
+  outline: none;
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect x='0' y='0' width='16' height='16' fill='%23c0c0c0'/%3E%3Crect x='0' y='0' width='16' height='16' fill='none' stroke-width='2' stroke='%23ffffff' style='stroke-dasharray:0;' clip-path='polygon(0 0,16 0,0 16)'/%3E%3Cpolygon points='4,5 12,5 8,11' fill='%23000000'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+}
+
+/* ── Group Box ── */
+
+.win-groupbox {
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 16px 8px 8px;
+  position: relative;
+  margin-top: 8px;
+}
+
+.win-groupbox-title {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  background: #c0c0c0;
+  padding: 0 4px;
+  font-size: 11px;
+}
+
+/* ── List View ── */
+
+.win-listview {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  overflow: auto;
+}
+
+.win-listrow {
+  display: block;
+  padding: 4px 6px;
+  border-bottom: 1px solid #e8e8e8;
+  cursor: default;
+  color: #000000;
+  text-decoration: none;
+}
+
+.win-listrow:hover,
+.win-listrow:focus {
+  background: #000080;
+  color: #ffffff;
+  outline: none;
+}
+
+.win-listrow:hover *,
+.win-listrow:focus * {
+  color: #ffffff !important;
+}
+
+/* ── Status Bar ── */
+
+.win-statusbar {
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 2px;
+}
+
+.win-status-panel {
+  border: 1px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+/* ── Separator ── */
+
+.win-separator {
+  height: 0;
+  border: 0;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  margin: 6px 0;
+}
+
+/* ── Scrollbars (Chromium only) ── */
+
+::-webkit-scrollbar {
+  width: 17px;
+  height: 17px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #c0c0c0;
+  background-image: repeating-conic-gradient(#a0a0a0 0% 25%, #c0c0c0 0% 50%);
+  background-size: 4px 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}
+
+::-webkit-scrollbar-button {
+  display: block;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  height: 17px;
+  width: 17px;
+}
+
+::-webkit-scrollbar-corner {
+  background: #c0c0c0;
 }

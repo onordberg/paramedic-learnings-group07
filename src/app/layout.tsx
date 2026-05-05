@@ -1,17 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Paramedic Learnings",
@@ -25,24 +14,58 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-slate-50 font-[family-name:var(--font-geist-sans)]">
-        <header className="border-b border-slate-200 bg-white">
-          <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-lg font-bold text-slate-900">
-                Paramedic Learnings
+    <html lang="en" className="h-full">
+      <body
+        className="min-h-full flex flex-col items-center p-4"
+        style={{
+          background: "#008080",
+          backgroundImage:
+            "repeating-conic-gradient(#007070 0% 25%, #008080 0% 50%)",
+          backgroundSize: "4px 4px",
+        }}
+      >
+        {/* Application window */}
+        <div
+          className="win-raised-outer w-full max-w-5xl flex flex-col"
+          style={{ minHeight: "calc(100vh - 2rem)" }}
+        >
+          <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0" }}>
+            {/* Title bar */}
+            <div className="win-titlebar">
+              <div className="flex items-center gap-1">
+                <div className="win-titlebar-btn" style={{ fontSize: "9px" }}>─</div>
+                <span>Paramedic Learnings</span>
+              </div>
+              <div className="flex gap-0.5">
+                <div className="win-titlebar-btn">▼</div>
+                <div className="win-titlebar-btn">▲</div>
+              </div>
+            </div>
+
+            {/* Menu bar / navigation */}
+            <nav className="win-menubar">
+              <Link href="/" className="win-menu-item">
+                <u>T</u>opics
+              </Link>
+              <Link href="/topics/new" className="win-menu-item">
+                <u>N</u>ew Topic
+              </Link>
+            </nav>
+
+            {/* Page content */}
+            <main className="flex-1 p-3 overflow-auto" style={{ background: "#c0c0c0" }}>
+              {children}
+            </main>
+
+            {/* Status bar */}
+            <footer className="win-statusbar">
+              <span className="win-status-panel" style={{ flex: 1 }}>
+                Ready
               </span>
-            </Link>
+              <span className="win-status-panel">Paramedic Learnings v1.0</span>
+            </footer>
           </div>
-        </header>
-        <main className="flex-1">{children}</main>
-        <footer className="border-t border-slate-200 bg-white py-6 text-center text-sm text-slate-400">
-          Built for ambulance personnel — share knowledge, save lives.
-        </footer>
+        </div>
       </body>
     </html>
   );
