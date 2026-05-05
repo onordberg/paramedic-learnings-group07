@@ -5,7 +5,7 @@ import { topics, topicAreaEnum } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-const CreateTopicSchema = z.object({
+export const CreateTopicSchema = z.object({
   title: z.string().min(1, "Title is required"),
   summary: z.string().min(1, "Summary is required"),
   guidance: z.string().min(1, "Guidance is required"),
