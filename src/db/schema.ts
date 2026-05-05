@@ -13,7 +13,7 @@ export const topics = pgTable("topics", {
   summary: text("summary").notNull(),
   guidance: text("guidance").notNull(),
   rationale: text("rationale"),
-  area: topicAreaEnum("area").notNull(),
+  area: topicAreaEnum("area").notNull().default("Operational"),
   createdBy: text("created_by").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true })
