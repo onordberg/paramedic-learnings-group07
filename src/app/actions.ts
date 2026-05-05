@@ -66,8 +66,18 @@ export async function updateTopic(
 
   const { id, ...fields } = result.data;
 
+  // Only notify subscribers when guidance text actually changes
+  const [current] = await db
+    .select({ guidance: topics.guidance })
+    .from(topics)
+    .where(eq(topics.id, id))
+    .limit(1);
+
   await db.update(topics).set(fields).where(eq(topics.id, id));
-  await createTopicNotification(id, fields.title);
+
+  if (current && current.guidance !== fields.guidance) {
+    await createTopicNotification(id, fields.title);
+  }
 
   revalidatePath(`/topics/${id}`);
   revalidatePath("/");

@@ -3,6 +3,7 @@ import { notifications, topics } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { markAllNotificationsRead } from "@/app/subscription-actions";
+import { MarkAllReadButton } from "./MarkAllReadButton";
 
 export default async function NotificationsPage() {
   const rows = await db
@@ -45,11 +46,7 @@ export default async function NotificationsPage() {
         }}>
           <Link href="/" className="win-btn win-btn-sm">← Back</Link>
           {unreadCount > 0 && (
-            <form action={markAllNotificationsRead}>
-              <button type="submit" className="win-btn win-btn-sm">
-                Mark all read
-              </button>
-            </form>
+            <MarkAllReadButton action={markAllNotificationsRead} />
           )}
           <span style={{ fontSize: "11px", color: "#404040", marginLeft: "4px" }}>
             {unreadCount > 0

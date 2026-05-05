@@ -14,14 +14,12 @@ export function SubscribeForm({
 }) {
   const [state, formAction, isPending] = useActionState(subscribeTopic, initial);
 
-  const displayCount = state.success ? subscriberCount + 1 : subscriberCount;
-
   return (
     <div className="win-groupbox" style={{ marginBottom: "8px" }}>
       <span className="win-groupbox-title">Subscriptions</span>
 
       <div style={{ fontSize: "11px", color: "#404040", marginBottom: "8px" }}>
-        {displayCount} {displayCount === 1 ? "subscriber" : "subscribers"}
+        {subscriberCount} {subscriberCount === 1 ? "subscriber" : "subscribers"}
       </div>
 
       {!state.success ? (
