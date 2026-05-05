@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SearchAndFilter } from "@/app/_components/SearchAndFilter";
 
@@ -16,6 +16,10 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("SearchAndFilter", () => {
+  beforeEach(() => {
+    mockReplace.mockClear();
+  });
+
   it("renders a search input", () => {
     render(<SearchAndFilter />);
     expect(screen.getByPlaceholderText(/search topics/i)).toBeTruthy();

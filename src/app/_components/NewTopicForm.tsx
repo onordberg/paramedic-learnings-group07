@@ -35,7 +35,7 @@ export function NewTopicForm() {
           <label htmlFor="area" className="text-xs text-text-muted uppercase tracking-wide">
             Area
           </label>
-          <select id="area" name="area" className={fieldClass}>
+          <select id="area" name="area" required className={fieldClass}>
             <option value="">Select area…</option>
             {AREAS.map((a) => (
               <option key={a} value={a}>

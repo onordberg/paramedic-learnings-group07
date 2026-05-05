@@ -5,15 +5,9 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { NewTopicForm } from "@/app/_components/NewTopicForm";
 import { SearchAndFilter } from "@/app/_components/SearchAndFilter";
+import { AREA_BADGE } from "@/app/_lib/area-badge";
 
 type SearchParams = Promise<{ q?: string; area?: string }>;
-
-const AREA_BADGE: Record<string, string> = {
-  Clinical: "bg-primary-subtle text-primary",
-  Operational: "bg-slate-100 text-text-muted",
-  Safety: "bg-red-50 text-danger",
-  Administrative: "bg-slate-100 border border-border text-text-muted",
-};
 
 export default async function Home({
   searchParams,
