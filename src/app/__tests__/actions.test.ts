@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CreateTopicSchema } from "@/app/actions";
+import { CreateTopicSchema } from "@/app/_lib/create-topic-schema";
 
 const validInput = {
   title: "Cardiac Arrest Protocol",
