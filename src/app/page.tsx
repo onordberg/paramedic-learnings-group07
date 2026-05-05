@@ -49,104 +49,95 @@ export default async function Home({
     .orderBy(desc(topics.updatedAt));
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      <div className="flex items-baseline justify-between mb-6">
-        <h1 className="text-3xl font-bold tracking-tight text-text">
-          Operational Topics
-        </h1>
-        <span className="font-mono text-xs text-text-muted uppercase tracking-wide">
-          [{allTopics.length}&nbsp;{allTopics.length === 1 ? "topic" : "topics"}]
-        </span>
-      </div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "8px", alignItems: "start" }}>
+      {/* Left panel: topic list */}
+      <div>
+        {/* Search & filter */}
+        <div className="win-groupbox" style={{ marginTop: 0, marginBottom: "8px" }}>
+          <span className="win-groupbox-title">Filter</span>
+          <Suspense>
+            <SearchAndFilter />
+          </Suspense>
+        </div>
 
-      <Suspense>
-        <SearchAndFilter />
-      </Suspense>
+        {/* Topic count header */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
+          <span style={{ fontSize: "11px", fontWeight: "bold" }}>Operational Topics</span>
+          <span style={{ fontSize: "11px", color: "#808080" }}>
+            {allTopics.length} {allTopics.length === 1 ? "item" : "items"}
+          </span>
+        </div>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <section className="lg:col-span-7">
-          {allTopics.length === 0 ? (
-            <EmptyState hasFilters={!!(q || area)} />
-          ) : (
-            <ul className="flex flex-col gap-4">
-              {allTopics.map((topic) => (
-                <li key={topic.id}>
-                  <TopicCard
-                    topic={topic}
-                    areaBadge={
-                      AREA_BADGE[topic.area] ?? "bg-slate-100 text-text-muted"
-                    }
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <aside className="lg:col-span-5">
-          <div className="lg:sticky lg:top-6">
-            <NewTopicForm />
+        {/* List view */}
+        <div className="win-listview" style={{ maxHeight: "calc(100vh - 280px)", overflowY: "auto" }}>
+          {/* Column headers */}
+          <div
+            className="win-raised"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 80px 90px",
+              padding: "2px 6px",
+              background: "#c0c0c0",
+              fontSize: "11px",
+              fontWeight: "bold",
+              borderBottom: "1px solid #808080",
+            }}
+          >
+            <span>Title</span>
+            <span>Area</span>
+            <span>Updated</span>
           </div>
-        </aside>
-      </div>
-    </div>
-  );
-}
 
-type TopicSummary = {
-  id: string;
-  title: string;
-  summary: string;
-  area: string;
-  createdBy: string;
-  updatedAt: Date;
-};
-
-function TopicCard({
-  topic,
-  areaBadge,
-}: {
-  topic: TopicSummary;
-  areaBadge: string;
-}) {
-  return (
-    <Link
-      href={`/topics/${topic.id}`}
-      className="block bg-surface-raised border border-border border-l-4 border-l-primary rounded p-4 transition-shadow duration-150 hover:shadow-sm"
-    >
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="text-base font-semibold text-text">{topic.title}</h3>
-        <span
-          className={`text-xs font-medium px-2 py-0.5 rounded flex-shrink-0 ${areaBadge}`}
-        >
-          {topic.area}
-        </span>
+          {allTopics.length === 0 ? (
+            <div style={{ padding: "20px", textAlign: "center", color: "#808080" }}>
+              {q || area ? "No matching topics found." : "No topics yet. Create one using the form."}
+            </div>
+          ) : (
+            allTopics.map((topic) => {
+              return (
+                <Link
+                  key={topic.id}
+                  href={`/topics/${topic.id}`}
+                  className="win-listrow"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 80px 90px",
+                    gap: "4px",
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: "bold", fontSize: "11px" }}>{topic.title}</div>
+                    <div style={{ fontSize: "11px", color: "#404040", marginTop: "1px" }}>
+                      {topic.summary}
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#808080" }}>— {topic.createdBy}</div>
+                  </div>
+                  <div>
+                    <span
+                      style={{
+                        fontSize: "10px",
+                        padding: "1px 4px",
+                        display: "inline-block",
+                        ...AREA_BADGE[topic.area],
+                      }}
+                    >
+                      {topic.area}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: "11px", color: "#404040", fontFamily: "monospace" }}>
+                    {topic.updatedAt.toISOString().slice(0, 10)}
+                  </div>
+                </Link>
+              );
+            })
+          )}
+        </div>
       </div>
-      <p className="mt-1 text-sm text-text-muted line-clamp-2">{topic.summary}</p>
-      <div className="mt-3 flex items-center gap-2">
-        <span className="text-xs text-text-muted uppercase tracking-wide">
-          {topic.createdBy}
-        </span>
-        <span className="text-text-muted text-xs select-none">·</span>
-        <span className="font-mono text-xs text-text-muted">
-          {topic.updatedAt.toISOString().slice(0, 10)}
-        </span>
-      </div>
-    </Link>
-  );
-}
 
-function EmptyState({ hasFilters }: { hasFilters: boolean }) {
-  return (
-    <div className="border border-dashed border-border rounded p-10 text-center">
-      <p className="font-mono text-sm text-text-muted uppercase tracking-wide">
-        {hasFilters ? "No matching topics" : "No topics yet"}
-      </p>
-      <p className="mt-2 text-xs text-text-muted">
-        {hasFilters
-          ? "Try a different search term or clear the area filter."
-          : "Create the first operational topic using the form."}
-      </p>
+      {/* Right panel: create topic form */}
+      <div>
+        <NewTopicForm />
+      </div>
     </div>
   );
 }
