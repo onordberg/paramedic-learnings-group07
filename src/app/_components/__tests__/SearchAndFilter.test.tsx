@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { SearchAndFilter } from "@/app/_components/SearchAndFilter";
 
 const mockReplace = vi.fn();
@@ -18,17 +18,22 @@ vi.mock("next/navigation", () => ({
 describe("SearchAndFilter", () => {
   beforeEach(() => {
     mockReplace.mockClear();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("renders a search input", () => {
     render(<SearchAndFilter />);
-    expect(screen.getByPlaceholderText(/search topics/i)).toBeTruthy();
+    expect(screen.getByPlaceholderText(/search by title/i)).toBeTruthy();
   });
 
   it("renders All chip as active by default", () => {
     render(<SearchAndFilter />);
     const allBtn = screen.getByRole("button", { name: "All" });
-    expect(allBtn.className).toContain("bg-primary");
+    expect(allBtn.className).toContain("win-btn-active");
   });
 
   it("renders all four area chips", () => {
@@ -45,10 +50,13 @@ describe("SearchAndFilter", () => {
     expect(mockReplace).toHaveBeenCalledWith("/?area=Clinical", { scroll: false });
   });
 
-  it("calls router.replace when search input changes", () => {
+  it("calls router.replace when search input changes (after debounce)", () => {
     render(<SearchAndFilter />);
-    fireEvent.change(screen.getByPlaceholderText(/search topics/i), {
+    fireEvent.change(screen.getByPlaceholderText(/search by title/i), {
       target: { value: "cardiac" },
+    });
+    act(() => {
+      vi.advanceTimersByTime(250);
     });
     expect(mockReplace).toHaveBeenCalledWith("/?q=cardiac", { scroll: false });
   });
