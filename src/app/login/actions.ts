@@ -11,7 +11,8 @@ export async function login(
   _prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
-  const callbackUrl = (formData.get("callbackUrl") as string) || "/";
+  const raw = (formData.get("callbackUrl") as string) || "/";
+  const callbackUrl = raw.startsWith("/") && !raw.startsWith("//") ? raw : "/";
 
   try {
     await signIn("credentials", {

@@ -58,6 +58,9 @@ export async function getUnreadNotificationCount(): Promise<number> {
 }
 
 export async function markAllNotificationsRead(): Promise<void> {
+  const session = await auth();
+  if (!session) return;
+
   await db
     .update(notifications)
     .set({ readAt: new Date() })
