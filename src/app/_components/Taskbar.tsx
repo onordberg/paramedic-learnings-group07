@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { StartMenu } from "@/app/_components/StartMenu";
 import { Minesweeper } from "@/app/_components/Minesweeper";
+import { useWindowState } from "@/app/_components/WindowStateContext";
 
 function TaskbarButton({
   href,
@@ -28,7 +29,7 @@ function TaskbarButton({
 
   if (href) {
     return (
-      <Link href={href} className={className} style={style}>
+      <Link href={href} className={className} style={style} onClick={onClick}>
         {children}
       </Link>
     );
@@ -43,6 +44,7 @@ function TaskbarButton({
 
 export function Taskbar() {
   const pathname = usePathname();
+  const { isMinimized, minimize, restore } = useWindowState();
   const [clock, setClock] = useState("");
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [minesweeperOpen, setMinesweeperOpen] = useState(false);
@@ -69,10 +71,11 @@ export function Taskbar() {
   const closeMinesweeper = useCallback(() => setMinesweeperOpen(false), []);
 
   const topicsActive =
-    pathname === "/" ||
-    pathname === "/topics" ||
-    pathname.startsWith("/topics/");
-  const notificationsActive = pathname === "/notifications";
+    !isMinimized &&
+    (pathname === "/" ||
+      pathname === "/topics" ||
+      pathname.startsWith("/topics/"));
+  const notificationsActive = !isMinimized && pathname === "/notifications";
 
   return (
     <>
@@ -124,6 +127,17 @@ export function Taskbar() {
         }}
       />
 
+      {/* Pinned app button — reflects window state, toggles minimize/restore */}
+      <TaskbarButton
+        active={isMinimized}
+        onClick={() => (isMinimized ? restore() : minimize())}
+        extraStyle={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "bold" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/PARAME~1.SVG" alt="" width={20} height={20} style={{ imageRendering: "pixelated" }} />
+        Paramedic Learnings
+      </TaskbarButton>
+
       {minesweeperOpen && (
         <TaskbarButton
           active={!minesweeperMinimized}
@@ -136,7 +150,7 @@ export function Taskbar() {
         </TaskbarButton>
       )}
 
-      <TaskbarButton href="/topics" active={topicsActive}>
+      <TaskbarButton href="/topics" active={topicsActive} onClick={restore}>
         Topics
       </TaskbarButton>
 
@@ -144,6 +158,7 @@ export function Taskbar() {
         href="/notifications"
         active={notificationsActive}
         extraStyle={{ display: "flex", alignItems: "center", gap: "4px" }}
+        onClick={restore}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/bell-win311.svg" alt="" width={20} height={20} style={{ imageRendering: "pixelated" }} />
