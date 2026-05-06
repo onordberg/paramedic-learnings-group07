@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import {
   WindowStateProvider,
@@ -20,12 +20,14 @@ function Inspector() {
 
 describe("useWindowState", () => {
   it("throws when used outside WindowStateProvider", () => {
-    const consoleError = console.error;
-    console.error = () => {};
-    expect(() => render(<Inspector />)).toThrow(
-      "useWindowState must be used inside WindowStateProvider"
-    );
-    console.error = consoleError;
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      expect(() => render(<Inspector />)).toThrow(
+        "useWindowState must be used inside WindowStateProvider"
+      );
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("starts with isMinimized false", () => {
