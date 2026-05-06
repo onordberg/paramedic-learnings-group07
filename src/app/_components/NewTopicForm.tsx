@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import { createTopic, type CreateTopicState } from "@/app/actions";
 import { AREA_COLORS } from "@/app/_lib/area-badge";
+import { FormError } from "@/app/_components/FormError";
 
 const AREAS = ["Clinical", "Operational", "Safety", "Administrative"] as const;
 
@@ -49,11 +50,7 @@ export function NewTopicForm() {
         <FormField label="Guidance:" name="guidance" placeholder="Detailed operational guidance…" rows={5} />
         <FormField label="Rationale (optional):" name="rationale" placeholder="Why does this guidance exist?" rows={3} />
 
-        {state.error && (
-          <div className="win-sunken" style={{ padding: "4px 6px", background: "#ffffff" }}>
-            <p style={{ color: "#800000", fontSize: "11px" }}>⚠ {state.error}</p>
-          </div>
-        )}
+        {state.error && <FormError message={state.error} />}
 
         {state.success && (
           <div className="win-sunken" style={{ padding: "4px 6px", background: "#ffffff" }}>
