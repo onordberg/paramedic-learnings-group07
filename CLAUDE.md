@@ -51,7 +51,7 @@ npx drizzle-kit migrate    # apply migrations to the database
 
 **Domain model** (from the user stories): the core entities are **topics** (operational guidance, versioned), **sources** (debrief reports, research findings), **change proposals** (AI-generated drafts linking sources to a topic update), and **approvals** (human decisions on proposals). Stories 1–6 establish topics; Stories 9–18 build the "AI proposes, human approves" loop.
 
-**AI integration** — Stories 12–15 require calling an LLM (summary generation, conflict flagging, proposal drafting). Use the Anthropic SDK (`anthropic` package) with `claude-sonnet-4-6` or `claude-haiku-4-5-20251001` as appropriate; add it as a dependency when needed.
+**AI integration** — Stories 12–15 require calling an LLM (summary generation, conflict flagging, proposal drafting). Use the Anthropic SDK (`@anthropic-ai/sdk` package) with `claude-sonnet-4-6` or `claude-haiku-4-5-20251001` as appropriate. Set `ANTHROPIC_API_KEY` in `.env.local`; the SDK reads it automatically.
 
 ## Key Paths
 
