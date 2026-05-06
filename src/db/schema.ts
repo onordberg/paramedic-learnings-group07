@@ -53,6 +53,8 @@ export const sources = pgTable("sources", {
     .notNull()
     .references(() => users.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  summary: text("summary"),
+  summaryModel: text("summary_model"),
 });
 
 export const subscriptions = pgTable(

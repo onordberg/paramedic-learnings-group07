@@ -43,6 +43,13 @@
       "when": 1746518400000,
       "tag": "0005_sources_and_topic_fk",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1778068742560,
+      "tag": "0006_chubby_tyrannus",
+      "breakpoints": true
     }
   ]
 }
