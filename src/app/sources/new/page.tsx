@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { FormError } from "@/app/_components/FormError";
 import { sourceTypeEnum } from "@/db/schema";
 import { SOURCE_TYPE_LABELS } from "@/app/_lib/source-type-labels";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 const SOURCE_TYPES = sourceTypeEnum.enumValues;
 
@@ -27,6 +29,7 @@ export default function NewSourcePage() {
 
   return (
     <div style={{ maxWidth: "600px" }}>
+      <SetClippyContext context={buildPageContext("source-new")} />
       <div className="win-raised" style={{ overflow: "hidden" }}>
         <div className="win-titlebar" style={{ fontSize: "11px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
