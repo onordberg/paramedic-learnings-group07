@@ -134,4 +134,44 @@ describe("Taskbar", () => {
     fireEvent.click(screen.getByRole("link", { name: /^notifications$/i }));
     expect(screen.getByText("window content")).toBeTruthy();
   });
+
+  it("renders the Paramedic Learnings pinned app button", () => {
+    setPathname("/");
+    renderTaskbar();
+    expect(screen.getByRole("button", { name: /paramedic learnings/i })).toBeTruthy();
+  });
+
+  it("Paramedic Learnings button does not have win-btn-active when window is open", () => {
+    setPathname("/");
+    renderTaskbar();
+    const btn = screen.getByRole("button", { name: /paramedic learnings/i });
+    expect(btn.className).not.toContain("win-btn-active");
+  });
+
+  it("Paramedic Learnings button has win-btn-active when window is minimized", () => {
+    setPathname("/");
+    renderMinimizedTaskbar();
+    const btn = screen.getByRole("button", { name: /paramedic learnings/i });
+    expect(btn.className).toContain("win-btn-active");
+  });
+
+  it("clicking Paramedic Learnings button minimizes the window when open", () => {
+    setPathname("/");
+    render(
+      <WindowStateProvider>
+        <WindowBody><span>window content</span></WindowBody>
+        <Taskbar />
+      </WindowStateProvider>
+    );
+    expect(screen.getByText("window content")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /paramedic learnings/i }));
+    expect(screen.queryByText("window content")).toBeNull();
+  });
+
+  it("clicking Paramedic Learnings button restores the window when minimized", () => {
+    setPathname("/");
+    renderMinimizedTaskbar();
+    fireEvent.click(screen.getByRole("button", { name: /paramedic learnings/i }));
+    expect(screen.getByText("window content")).toBeTruthy();
+  });
 });
