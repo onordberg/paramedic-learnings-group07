@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   const { messages, pageContext } = await req.json();
 
   const result = streamText({
-    model: azure("mdlr-prod-aif-main-oai-gpt-4.1-2025-04-14"),
+    model: azure(process.env.AZURE_DEPLOYMENT_NAME!),
     system: SYSTEM_PROMPT.replace("CONTEXT_PLACEHOLDER", pageContext ?? ""),
     messages: await convertToModelMessages(messages),
   });
