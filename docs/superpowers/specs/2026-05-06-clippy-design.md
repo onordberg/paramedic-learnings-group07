@@ -71,6 +71,7 @@ Client component. The floating character + chat panel rendered inside `layout.ts
 Client component. Accepts a single `context: string` prop. On mount, calls `setPageContext(context)` from `ClippyProvider`. No rendered output.
 
 Placed in:
+
 - `src/app/topics/[id]/page.tsx` — passes `"User is reading the topic '{title}'. Summary: {summary}. Guidance: {guidance}"`.
 - `src/app/topics/new/page.tsx` — passes `"User is creating a new topic."`.
 - `src/app/topics/page.tsx` — passes `"User is browsing the topic list."`.
@@ -85,7 +86,7 @@ Pure function. Maps `(page: string, topic?: TopicData)` to a plain-English conte
 
 ### System prompt
 
-```
+```text
 You are Clippy, the helpful assistant from Microsoft Office, now embedded in
 Paramedic Learnings — a knowledge platform for ambulance personnel.
 
@@ -112,6 +113,7 @@ Add `anthropic` package if not already present (CLAUDE.md notes it is used for A
 Clippy uses the **authentic Microsoft Office character** via `clippyjs`, which ships the original Microsoft Agent sprite sheets from Office 97/2000. This gives all original animations rather than a CSS approximation.
 
 The chat panel follows the existing Win 3.11 CSS classes from `globals.css`:
+
 - `win-raised` border on the panel window
 - `win-titlebar` with `#000080` background for the title bar
 - `win-sunken-deep` for the message history area
@@ -133,7 +135,7 @@ If the `/api/clippy` request fails:
 ## Testing
 
 | What | How |
-|---|---|
+| --- | --- |
 | `buildPageContext()` | Unit tests covering all page variants (topic detail, new topic, list, default) |
 | `ClippyWidget` open/close | Component test: clicking `ClippyButton` toggles visibility |
 | `ClippyWidget` message send | Component test: submitting a message appends it to the history, disables input during streaming |
@@ -144,7 +146,7 @@ If the `/api/clippy` request fails:
 ## Files to Create / Modify
 
 | Action | Path |
-|---|---|
+| --- | --- |
 | Create | `src/app/_components/ClippyProvider.tsx` |
 | Create | `src/app/_components/ClippyButton.tsx` |
 | Create | `src/app/_components/ClippyWidget.tsx` |
