@@ -112,7 +112,7 @@ export function Taskbar() {
         extraStyle={{ display: "flex", alignItems: "center", gap: "4px" }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/bell-win311.svg" alt="" width={14} height={14} style={{ imageRendering: "pixelated" }} />
+        <img src="/images/bell-win311.svg" alt="" width={20} height={20} style={{ imageRendering: "pixelated" }} />
         Notifications
       </TaskbarButton>
 
