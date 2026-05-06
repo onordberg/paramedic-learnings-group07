@@ -17,7 +17,7 @@ const fieldStyle: React.CSSProperties = { display: "flex", flexDirection: "colum
 export default function NewSourcePage() {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(createSource, initialState);
-  const [sourceType, setSourceType] = useState("");
+  const [sourceType, setSourceType] = useState<(typeof SOURCE_TYPES)[number] | "">("");
 
   useEffect(() => {
     if (state.success && state.id) {
@@ -47,7 +47,7 @@ export default function NewSourcePage() {
                 className="win-select"
                 style={{ width: "200px" }}
                 value={sourceType}
-                onChange={(e) => setSourceType(e.target.value)}
+                onChange={(e) => setSourceType(e.target.value as (typeof SOURCE_TYPES)[number] | "")}
               >
                 <option value="">— Select type —</option>
                 {SOURCE_TYPES.map((t) => (
@@ -58,7 +58,7 @@ export default function NewSourcePage() {
 
             <div className="win-separator" />
 
-            <FormField label="Title:" name="title" placeholder="e.g. Post-incident debrief — CPR protocol deviation" />
+            <FormField label="Title:" name="title" placeholder="e.g. Post-incident debrief — CPR protocol deviation" required />
 
             {sourceType === "debrief" && (
               <div style={fieldStyle}>
@@ -76,6 +76,7 @@ export default function NewSourcePage() {
             <FormField
               label={sourceType === "research" ? "Summary:" : "Content:"}
               name="content"
+              required
               placeholder={
                 sourceType === "research"
                   ? "Summarise the key findings and conclusions."
@@ -117,12 +118,14 @@ function FormField({
   placeholder,
   hint,
   rows,
+  required,
 }: {
   label: string;
   name: string;
   placeholder?: string;
   hint?: string;
   rows?: number;
+  required?: boolean;
 }) {
   return (
     <div style={fieldStyle}>
@@ -136,6 +139,7 @@ function FormField({
           name={name}
           rows={rows}
           placeholder={placeholder}
+          required={required}
           className="win-input"
           style={{ resize: "none" }}
         />
@@ -145,6 +149,7 @@ function FormField({
           name={name}
           type="text"
           placeholder={placeholder}
+          required={required}
           className="win-input"
         />
       )}

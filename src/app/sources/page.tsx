@@ -1,7 +1,6 @@
 import { db } from "@/db";
 import { sources, users } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { SOURCE_TYPE_LABELS } from "@/app/_lib/source-type-labels";
 

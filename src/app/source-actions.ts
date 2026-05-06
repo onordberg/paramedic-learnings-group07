@@ -20,8 +20,9 @@ export async function createSource(
   if (!session) return { error: "Not authenticated" };
 
   const rawDate = formData.get("date") as string | null;
+  const sourceType = formData.get("sourceType") as string | null;
   let parsedDate: Date | undefined;
-  if (rawDate) {
+  if (rawDate && sourceType === "debrief") {
     const d = new Date(rawDate);
     if (isNaN(d.getTime())) return { error: "Invalid date" };
     parsedDate = d;
