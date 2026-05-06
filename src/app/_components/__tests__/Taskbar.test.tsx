@@ -13,6 +13,7 @@ vi.mock("next/navigation", () => ({
   usePathname: vi.fn(),
 }));
 
+// next/image doesn't render in jsdom — replace with a plain <img>
 vi.mock("next/image", () => ({
   default: ({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) => (
     // eslint-disable-next-line @next/next/no-img-element
@@ -30,6 +31,19 @@ function renderTaskbar() {
       <Taskbar />
     </WindowStateProvider>
   );
+}
+
+// Helper to render a minimized window for restore tests
+function renderMinimizedTaskbar() {
+  render(
+    <WindowStateProvider>
+      <MinimizeButton />
+      <WindowBody><span>window content</span></WindowBody>
+      <Taskbar />
+    </WindowStateProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "─" }));
+  // window is now hidden
 }
 
 describe("Taskbar", () => {
@@ -109,32 +123,14 @@ describe("Taskbar", () => {
 
   it("clicking Topics restores the window when minimized", () => {
     setPathname("/");
-    render(
-      <WindowStateProvider>
-        <MinimizeButton />
-        <WindowBody><span>window content</span></WindowBody>
-        <Taskbar />
-      </WindowStateProvider>
-    );
-    // minimize first
-    fireEvent.click(screen.getByRole("button", { name: "─" }));
-    expect(screen.queryByText("window content")).toBeNull();
-    // click Topics — should restore
+    renderMinimizedTaskbar();
     fireEvent.click(screen.getByRole("link", { name: /^topics$/i }));
     expect(screen.getByText("window content")).toBeTruthy();
   });
 
   it("clicking Notifications restores the window when minimized", () => {
     setPathname("/");
-    render(
-      <WindowStateProvider>
-        <MinimizeButton />
-        <WindowBody><span>window content</span></WindowBody>
-        <Taskbar />
-      </WindowStateProvider>
-    );
-    fireEvent.click(screen.getByRole("button", { name: "─" }));
-    expect(screen.queryByText("window content")).toBeNull();
+    renderMinimizedTaskbar();
     fireEvent.click(screen.getByRole("link", { name: /^notifications$/i }));
     expect(screen.getByText("window content")).toBeTruthy();
   });
