@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef } from "react";
 import { createTopic, type CreateTopicState } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { AREA_COLORS } from "@/app/_lib/area-badge";
+import { FormError } from "@/app/_components/FormError";
 
 const AREAS = ["Clinical", "Operational", "Safety", "Administrative"] as const;
 
@@ -64,15 +65,7 @@ export default function NewTopicPage() {
             <FormField label="Guidance:" name="guidance" placeholder="Write the full operational guidance here." rows={8} />
             <FormField label="Rationale:" name="rationale" hint="(optional)" placeholder="Why does this guidance exist?" rows={3} />
 
-            <div className="win-separator" />
-
-            <FormField label="Your name:" name="createdBy" placeholder="e.g. Anna Larsen" />
-
-            {state.error && (
-              <div className="win-sunken" style={{ padding: "4px 6px", background: "#ffffff" }}>
-                <p style={{ color: "#800000", fontSize: "11px" }}>⚠ {state.error}</p>
-              </div>
-            )}
+            {state.error && <FormError message={state.error} />}
 
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "4px", marginTop: "8px" }}>
               <button type="submit" disabled={isPending} className="win-btn win-btn-default">
