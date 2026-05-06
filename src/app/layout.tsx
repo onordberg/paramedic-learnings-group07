@@ -52,6 +52,12 @@ export default async function RootLayout({
               <Link href="/topics/new" className="win-menu-item">
                 <u>N</u>ew Topic
               </Link>
+              <Link href="/sources" className="win-menu-item">
+                <u>S</u>ources
+              </Link>
+              <Link href="/sources/new" className="win-menu-item">
+                Submit Source
+              </Link>
               <Link href="/notifications" className="win-menu-item">
                 Notifications
               </Link>

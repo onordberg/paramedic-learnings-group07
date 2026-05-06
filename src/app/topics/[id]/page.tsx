@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { topics } from "@/db/schema";
+import { topics, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -15,7 +15,22 @@ export default async function TopicPage({
   const { id } = await params;
 
   const [[topic], subscriberCount] = await Promise.all([
-    db.select().from(topics).where(eq(topics.id, id)).limit(1),
+    db
+      .select({
+        id: topics.id,
+        title: topics.title,
+        summary: topics.summary,
+        guidance: topics.guidance,
+        rationale: topics.rationale,
+        area: topics.area,
+        createdAt: topics.createdAt,
+        updatedAt: topics.updatedAt,
+        createdByName: users.name,
+      })
+      .from(topics)
+      .leftJoin(users, eq(topics.createdById, users.id))
+      .where(eq(topics.id, id))
+      .limit(1),
     getSubscriberCount(id),
   ]);
 
@@ -73,7 +88,7 @@ export default async function TopicPage({
               <tbody>
                 <tr>
                   <td style={{ color: "#808080", paddingRight: "12px", whiteSpace: "nowrap" }}>Created by:</td>
-                  <td>{topic.createdBy}</td>
+                  <td>{topic.createdByName ?? "Unknown"}</td>
                   <td style={{ color: "#808080", paddingLeft: "16px", paddingRight: "12px", whiteSpace: "nowrap" }}>Created:</td>
                   <td style={{ fontFamily: "monospace" }}>{topic.createdAt.toISOString().slice(0, 10)}</td>
                 </tr>

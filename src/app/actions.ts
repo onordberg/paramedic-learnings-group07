@@ -35,7 +35,7 @@ export async function createTopic(
 
   await db.insert(topics).values({
     ...result.data,
-    createdBy: session.user.name,
+    createdById: session.user.id,
   });
   revalidatePath("/");
   return { success: true };
