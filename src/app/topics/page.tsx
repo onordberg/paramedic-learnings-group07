@@ -1,6 +1,6 @@
 import { db } from "@/db";
-import { topics } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { topics, users } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { AREA_BADGE } from "@/app/_lib/area-badge";
 
@@ -11,10 +11,11 @@ export default async function TopicsPage() {
       title: topics.title,
       summary: topics.summary,
       area: topics.area,
-      createdBy: topics.createdBy,
+      createdByName: users.name,
       createdAt: topics.createdAt,
     })
     .from(topics)
+    .leftJoin(users, eq(topics.createdById, users.id))
     .orderBy(desc(topics.createdAt));
 
   return (
@@ -74,7 +75,7 @@ export default async function TopicsPage() {
                   {topic.area}
                 </span>
               </div>
-              <div style={{ color: "#404040" }}>{topic.createdBy}</div>
+              <div style={{ color: "#404040" }}>{topic.createdByName ?? "Unknown"}</div>
               <div style={{ color: "#404040", fontFamily: "monospace" }}>
                 {new Date(topic.createdAt).toLocaleDateString("en-GB", {
                   day: "numeric",

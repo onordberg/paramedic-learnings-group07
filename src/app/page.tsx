@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { topics, topicAreaEnum } from "@/db/schema";
+import { topics, topicAreaEnum, users } from "@/db/schema";
 import { desc, and, or, eq, ilike, SQL } from "drizzle-orm";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -41,10 +41,11 @@ export default async function Home({
       title: topics.title,
       summary: topics.summary,
       area: topics.area,
-      createdBy: topics.createdBy,
+      createdByName: users.name,
       updatedAt: topics.updatedAt,
     })
     .from(topics)
+    .leftJoin(users, eq(topics.createdById, users.id))
     .where(conditions.length ? and(...conditions) : undefined)
     .orderBy(desc(topics.updatedAt));
 
@@ -110,7 +111,7 @@ export default async function Home({
                     <div style={{ fontSize: "11px", color: "#404040", marginTop: "1px" }}>
                       {topic.summary}
                     </div>
-                    <div style={{ fontSize: "11px", color: "#808080" }}>— {topic.createdBy}</div>
+                    <div style={{ fontSize: "11px", color: "#808080" }}>— {topic.createdByName ?? "Unknown"}</div>
                   </div>
                   <div>
                     <span

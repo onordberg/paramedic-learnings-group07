@@ -9,6 +9,13 @@ export const topicAreaEnum = pgEnum("topic_area", [
 
 export const userRoleEnum = pgEnum("user_role", ["clinician", "approver"]);
 
+export const sourceTypeEnum = pgEnum("source_type", [
+  "debrief",
+  "research",
+  "guideline",
+  "incident_report",
+]);
+
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
@@ -27,12 +34,25 @@ export const topics = pgTable("topics", {
   guidance: text("guidance").notNull(),
   rationale: text("rationale"),
   area: topicAreaEnum("area").notNull().default("Operational"),
-  createdBy: text("created_by").notNull(),
+  createdById: uuid("created_by_id").references(() => users.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true })
     .defaultNow()
     .notNull()
     .$onUpdateFn(() => new Date()),
+});
+
+export const sources = pgTable("sources", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  sourceType: sourceTypeEnum("source_type").notNull(),
+  date: timestamp("date", { withTimezone: true }),
+  content: text("content").notNull(),
+  metadata: text("metadata"),
+  submittedById: uuid("submitted_by_id")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
 export const subscriptions = pgTable(
@@ -59,5 +79,6 @@ export const notifications = pgTable("notifications", {
 });
 
 export type Topic = typeof topics.$inferSelect;
+export type Source = typeof sources.$inferSelect;
 export type Subscription = typeof subscriptions.$inferSelect;
 export type Notification = typeof notifications.$inferSelect;
