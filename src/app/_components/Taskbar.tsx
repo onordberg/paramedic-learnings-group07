@@ -79,7 +79,7 @@ export function Taskbar() {
       <Link
         href="/topics"
         className={topicsActive ? "win-btn win-btn-sm win-btn-active" : "win-btn win-btn-sm"}
-        style={topicsActive ? { padding: "2px 8px" } : undefined}
+        style={{ padding: "2px 8px" }}
       >
         Topics
       </Link>
@@ -92,7 +92,7 @@ export function Taskbar() {
             ? "win-btn win-btn-sm win-btn-active"
             : "win-btn win-btn-sm"
         }
-        style={notificationsActive ? { padding: "2px 8px" } : undefined}
+        style={{ padding: "2px 8px" }}
       >
         Notifications
       </Link>
