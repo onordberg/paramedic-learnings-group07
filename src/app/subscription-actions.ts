@@ -54,6 +54,7 @@ export async function getUnreadNotificationCount(): Promise<number> {
   return row?.n ?? 0;
 }
 
+// NOTE: marks ALL notifications read globally — no per-user read state (intentional course-project simplification).
 export async function markAllNotificationsRead(): Promise<void> {
   await db
     .update(notifications)
