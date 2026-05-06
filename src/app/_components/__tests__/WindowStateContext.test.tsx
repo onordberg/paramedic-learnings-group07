@@ -56,7 +56,7 @@ describe("MinimizeButton", () => {
         <MinimizeButton />
       </WindowStateProvider>
     );
-    expect(screen.getByRole("button", { name: "─" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Minimize" })).toBeTruthy();
   });
 
   it("calls minimize() on click", () => {
@@ -66,7 +66,7 @@ describe("MinimizeButton", () => {
         <Inspector />
       </WindowStateProvider>
     );
-    fireEvent.click(screen.getByRole("button", { name: "─" }));
+    fireEvent.click(screen.getByRole("button", { name: "Minimize" }));
     expect(screen.getByTestId("inspector").dataset.minimized).toBe("true");
   });
 });
@@ -88,7 +88,7 @@ describe("WindowBody", () => {
         <WindowBody><span>content</span></WindowBody>
       </WindowStateProvider>
     );
-    fireEvent.click(screen.getByRole("button", { name: "─" }));
+    fireEvent.click(screen.getByRole("button", { name: "Minimize" }));
     expect(screen.queryByText("content")).toBeNull();
   });
 });

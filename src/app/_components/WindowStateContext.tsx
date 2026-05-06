@@ -38,6 +38,7 @@ export function MinimizeButton() {
       type="button"
       className="win-titlebar-btn"
       style={{ fontSize: "9px" }}
+      aria-label="Minimize"
       onClick={minimize}
     >
       ─

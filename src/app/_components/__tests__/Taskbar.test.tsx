@@ -42,7 +42,7 @@ function renderMinimizedTaskbar() {
       <Taskbar />
     </WindowStateProvider>
   );
-  fireEvent.click(screen.getByRole("button", { name: "─" }));
+  fireEvent.click(screen.getByRole("button", { name: "Minimize" }));
   // window is now hidden
 }
 
