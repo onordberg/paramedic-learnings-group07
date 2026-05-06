@@ -1,5 +1,5 @@
 import { streamText, convertToModelMessages } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { azure } from "@ai-sdk/azure";
 
 const SYSTEM_PROMPT = `You are Clippy, the helpful assistant from Microsoft Office, now embedded in Paramedic Learnings — a knowledge platform for ambulance personnel.
 
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   const { messages, pageContext } = await req.json();
 
   const result = streamText({
-    model: anthropic("claude-haiku-4-5-20251001"),
+    model: azure("gpt-4.1"),
     system: SYSTEM_PROMPT.replace("CONTEXT_PLACEHOLDER", pageContext ?? ""),
     messages: await convertToModelMessages(messages),
   });

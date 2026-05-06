@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.75",
+    "@ai-sdk/azure": "^3.0.62",
     "@ai-sdk/react": "^3.0.177",
     "ai": "^6.0.175",
     "bcryptjs": "^3.0.3",
