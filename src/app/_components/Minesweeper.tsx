@@ -136,8 +136,14 @@ export function Minesweeper({ onClose }: MinesweeperProps) {
   // Dragging
   useEffect(() => {
     if (!drag) return;
-    const onMove = (e: MouseEvent) =>
-      setPos({ x: drag.posX + (e.clientX - drag.startX), y: drag.posY + (e.clientY - drag.startY) });
+    const onMove = (e: MouseEvent) => {
+      const x = drag.posX + (e.clientX - drag.startX);
+      const y = drag.posY + (e.clientY - drag.startY);
+      setPos({
+        x: Math.max(0, Math.min(window.innerWidth - 240, x)),
+        y: Math.max(0, Math.min(window.innerHeight - 30, y)),
+      });
+    };
     const onUp = () => setDrag(null);
     document.addEventListener("mousemove", onMove);
     document.addEventListener("mouseup", onUp);

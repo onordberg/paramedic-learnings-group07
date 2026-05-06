@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StartMenu } from "@/app/_components/StartMenu";
 import { Minesweeper } from "@/app/_components/Minesweeper";
 
@@ -46,6 +46,7 @@ export function Taskbar() {
   const [clock, setClock] = useState("");
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [minesweeperOpen, setMinesweeperOpen] = useState(false);
+  const [minesweeperMinimized, setMinesweeperMinimized] = useState(false);
 
   useEffect(() => {
     const tick = () =>
@@ -60,7 +61,12 @@ export function Taskbar() {
     return () => clearInterval(id);
   }, []);
 
-  const minesweeperActive = minesweeperOpen;
+  const closeStartMenu = useCallback(() => setStartMenuOpen(false), []);
+  const openMinesweeper = useCallback(() => {
+    setMinesweeperOpen(true);
+    setMinesweeperMinimized(false);
+  }, []);
+  const closeMinesweeper = useCallback(() => setMinesweeperOpen(false), []);
 
   const topicsActive =
     pathname === "/" ||
@@ -100,8 +106,8 @@ export function Taskbar() {
         </TaskbarButton>
         {startMenuOpen && (
           <StartMenu
-            onClose={() => setStartMenuOpen(false)}
-            onOpenMinesweeper={() => setMinesweeperOpen(true)}
+            onClose={closeStartMenu}
+            onOpenMinesweeper={openMinesweeper}
           />
         )}
       </div>
@@ -120,9 +126,9 @@ export function Taskbar() {
 
       {minesweeperOpen && (
         <TaskbarButton
-          active={minesweeperActive}
+          active={!minesweeperMinimized}
           extraStyle={{ display: "flex", alignItems: "center", gap: "4px" }}
-          onClick={() => setMinesweeperOpen(false)}
+          onClick={() => setMinesweeperMinimized((m) => !m)}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/minesweeper/app-icon.svg" alt="" width={16} height={16} style={{ imageRendering: "pixelated" }} />
@@ -154,7 +160,7 @@ export function Taskbar() {
       </span>
     </div>
 
-    {minesweeperOpen && <Minesweeper onClose={() => setMinesweeperOpen(false)} />}
+    {minesweeperOpen && !minesweeperMinimized && <Minesweeper onClose={closeMinesweeper} />}
     </>
   );
 }
