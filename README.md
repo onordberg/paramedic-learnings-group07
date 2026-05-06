@@ -22,7 +22,7 @@ npm install
 
 # Set up environment
 cp .env.example .env.local
-# Edit .env.local with your DATABASE_URL if you're not using the included Docker setup
+# Edit .env.local: set DATABASE_URL if not using Docker, generate AUTH_SECRET, and add ANTHROPIC_API_KEY (Stories 12+)
 
 # Start the dev server
 npm run dev

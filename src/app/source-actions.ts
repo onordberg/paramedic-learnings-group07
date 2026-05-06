@@ -2,9 +2,11 @@
 
 import { db } from "@/db";
 import { sources } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { CreateSourceSchema } from "@/app/_lib/create-source-schema";
 import { auth } from "@/auth";
+import { summarizeSource } from "@/lib/summarize-source";
 
 export type CreateSourceState = {
   error?: string;
@@ -41,6 +43,7 @@ export async function createSource(
     return { error: result.error.issues[0].message };
   }
 
+  let insertedId: string;
   try {
     const [inserted] = await db
       .insert(sources)
@@ -48,10 +51,31 @@ export async function createSource(
       .returning({ id: sources.id });
 
     if (!inserted) return { error: "Failed to create source" };
-
-    revalidatePath("/sources");
-    return { success: true, id: inserted.id };
+    insertedId = inserted.id;
   } catch {
     return { error: "Database error — please try again." };
   }
+
+  try {
+    const { summary, modelId } = await summarizeSource({
+      title: result.data.title,
+      sourceType: result.data.sourceType,
+      content: result.data.content,
+      metadata: result.data.metadata ?? null,
+    });
+    await db
+      .update(sources)
+      .set({ summary, summaryModel: modelId })
+      .where(eq(sources.id, insertedId));
+  } catch (err) {
+    // Catches both LLM-call failure and the follow-up DB update failure.
+    // The source row is already committed; only the summary write is lost.
+    console.error("[source-summary] generation or write failed", {
+      sourceId: insertedId,
+      err,
+    });
+  }
+
+  revalidatePath("/sources");
+  return { success: true, id: insertedId };
 }
