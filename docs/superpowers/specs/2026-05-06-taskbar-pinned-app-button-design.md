@@ -15,7 +15,7 @@ Changes are confined to `Taskbar.tsx` and its test file. No new files, no new ex
 - The button is always rendered (not conditional on window state)
 - **Window open:** normal raised style (`win-btn win-btn-sm`); clicking calls `minimize()`
 - **Window minimized:** pressed/sunken style (`win-btn win-btn-sm win-btn-active`); clicking calls `restore()`
-- Label: Windows logo image + "Paramedic Learnings" text (reuses the logo already used by Start)
+- Label: `public/images/PARAME~1.SVG` app icon + "Paramedic Learnings" text (rendered as `<img>` with `imageRendering: "pixelated"`, same as the bell icon)
 - Position: immediately after the separator, before Topics
 
 ```
@@ -45,7 +45,8 @@ Two targeted changes:
   onClick={() => (isMinimized ? restore() : minimize())}
   extraStyle={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "bold" }}
 >
-  <Image src="/images/windows-logo.webp" alt="" width={20} height={20} />
+  {/* eslint-disable-next-line @next/next/no-img-element */}
+  <img src="/images/PARAME~1.SVG" alt="" width={20} height={20} style={{ imageRendering: "pixelated" }} />
   Paramedic Learnings
 </TaskbarButton>
 ```
