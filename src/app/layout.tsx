@@ -87,7 +87,7 @@ export default async function RootLayout({
 
             <footer className="win-statusbar">
               <span className="win-status-panel" style={{ flex: 1 }}>
-                {session ? `Signed in as ${session.user.name}` : "Ready"}
+                {session?.user?.name ? `Signed in as ${session.user.name}` : "Ready"}
               </span>
               <Suspense fallback={null}>
                 <NotificationBadge />
