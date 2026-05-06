@@ -68,8 +68,12 @@ export async function createSource(
       .set({ summary, summaryModel: modelId })
       .where(eq(sources.id, insertedId));
   } catch (err) {
-    console.error("[summarize-source] failed", { sourceId: insertedId, err });
-    // Submission still succeeds; summary stays null.
+    // Catches both LLM-call failure and the follow-up DB update failure.
+    // The source row is already committed; only the summary write is lost.
+    console.error("[source-summary] generation or write failed", {
+      sourceId: insertedId,
+      err,
+    });
   }
 
   revalidatePath("/sources");
