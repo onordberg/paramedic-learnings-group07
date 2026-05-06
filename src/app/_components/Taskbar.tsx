@@ -1,10 +1,41 @@
-// src/app/_components/Taskbar.tsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+
+function TaskbarButton({
+  href,
+  active,
+  children,
+  extraStyle,
+}: {
+  href?: string;
+  active?: boolean;
+  children: React.ReactNode;
+  extraStyle?: React.CSSProperties;
+}) {
+  const className = active
+    ? "win-btn win-btn-sm win-btn-active"
+    : "win-btn win-btn-sm";
+  // Padding locked on all taskbar buttons to prevent :active pseudo-class jitter
+  const style: React.CSSProperties = { padding: "2px 8px", ...extraStyle };
+
+  if (href) {
+    return (
+      <Link href={href} className={className} style={style}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button type="button" className={className} style={style}>
+      {children}
+    </button>
+  );
+}
 
 export function Taskbar() {
   const pathname = usePathname();
@@ -49,11 +80,7 @@ export function Taskbar() {
       }}
     >
       {/* Start button — decorative, no routing */}
-      <button
-        className="win-btn win-btn-sm"
-        style={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "bold" }}
-        type="button"
-      >
+      <TaskbarButton extraStyle={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "bold" }}>
         <Image
           src="/images/windows-logo.webp"
           alt="Windows"
@@ -61,7 +88,7 @@ export function Taskbar() {
           height={20}
         />
         Start
-      </button>
+      </TaskbarButton>
 
       {/* Separator */}
       <div
@@ -75,27 +102,13 @@ export function Taskbar() {
         }}
       />
 
-      {/* Topics */}
-      <Link
-        href="/topics"
-        className={topicsActive ? "win-btn win-btn-sm win-btn-active" : "win-btn win-btn-sm"}
-        style={{ padding: "2px 8px" }}
-      >
+      <TaskbarButton href="/topics" active={topicsActive}>
         Topics
-      </Link>
+      </TaskbarButton>
 
-      {/* Notifications */}
-      <Link
-        href="/notifications"
-        className={
-          notificationsActive
-            ? "win-btn win-btn-sm win-btn-active"
-            : "win-btn win-btn-sm"
-        }
-        style={{ padding: "2px 8px" }}
-      >
+      <TaskbarButton href="/notifications" active={notificationsActive}>
         Notifications
-      </Link>
+      </TaskbarButton>
 
       {/* Clock */}
       <span
