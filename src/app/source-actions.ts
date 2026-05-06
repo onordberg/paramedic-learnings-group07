@@ -17,12 +17,13 @@ export async function createSource(
   formData: FormData
 ): Promise<CreateSourceState> {
   const session = await auth();
-  if (!session) return { error: "Not authenticated" };
+  if (!session?.user?.id) return { error: "Not authenticated" };
 
   const rawDate = formData.get("date") as string | null;
   const sourceType = formData.get("sourceType") as string | null;
   let parsedDate: Date | undefined;
-  if (rawDate && sourceType === "debrief") {
+  if (sourceType === "debrief") {
+    if (!rawDate) return { error: "Date is required for debrief reports" };
     const d = new Date(rawDate);
     if (isNaN(d.getTime())) return { error: "Invalid date" };
     parsedDate = d;
@@ -30,7 +31,7 @@ export async function createSource(
 
   const result = CreateSourceSchema.safeParse({
     title: formData.get("title"),
-    sourceType: formData.get("sourceType"),
+    sourceType,
     date: parsedDate,
     content: formData.get("content"),
     metadata: formData.get("metadata") || undefined,
@@ -40,13 +41,17 @@ export async function createSource(
     return { error: result.error.issues[0].message };
   }
 
-  const [inserted] = await db
-    .insert(sources)
-    .values({ ...result.data, submittedById: session.user.id })
-    .returning({ id: sources.id });
+  try {
+    const [inserted] = await db
+      .insert(sources)
+      .values({ ...result.data, submittedById: session.user.id })
+      .returning({ id: sources.id });
 
-  if (!inserted) return { error: "Failed to create source" };
+    if (!inserted) return { error: "Failed to create source" };
 
-  revalidatePath("/sources");
-  return { success: true, id: inserted.id };
+    revalidatePath("/sources");
+    return { success: true, id: inserted.id };
+  } catch {
+    return { error: "Database error — please try again." };
+  }
 }

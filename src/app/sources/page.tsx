@@ -82,7 +82,7 @@ export default async function SourcesPage() {
               </div>
               <div style={{ fontSize: "11px", color: "#404040" }}>{source.submittedByName ?? "Unknown"}</div>
               <div style={{ fontSize: "11px", color: "#404040", fontFamily: "monospace" }}>
-                {source.createdAt.toISOString().slice(0, 10)}
+                {(source.date ?? source.createdAt).toISOString().slice(0, 10)}
               </div>
             </Link>
           ))
