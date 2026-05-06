@@ -3,6 +3,8 @@ import { sources, users } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { SOURCE_TYPE_LABELS } from "@/app/_lib/source-type-labels";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 export default async function SourcesPage() {
   const allSources = await db
@@ -20,6 +22,7 @@ export default async function SourcesPage() {
 
   return (
     <div style={{ maxWidth: "800px" }}>
+      <SetClippyContext context={buildPageContext("source-list")} />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
         <span style={{ fontSize: "11px", fontWeight: "bold" }}>Sources</span>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>

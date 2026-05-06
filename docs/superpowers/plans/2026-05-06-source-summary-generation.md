@@ -4,7 +4,7 @@
 
 **Goal:** When a user submits a source (debrief, research finding, guideline, or incident report), Claude generates a 3–4 bullet summary that's stored alongside the source and shown on the detail page, clearly labeled as AI-generated. (Story 12.)
 
-**Architecture:** Per [ADR-001](../../adr/001-ai-source-summary.md). Two nullable columns added to `sources` (`summary`, `summary_model`). New `src/lib/summarize-source.ts` wraps the Anthropic SDK and owns the prompt template. The `createSource` server action calls it synchronously after insert, inside a try/catch — submission still succeeds if Claude is unavailable; the row keeps a null summary. The source detail page renders an "AI Summary" groupbox above the existing content, with a provenance footer showing the model id.
+**Architecture:** Per [ADR-002](../../adr/002-ai-source-summary.md). Two nullable columns added to `sources` (`summary`, `summary_model`). New `src/lib/summarize-source.ts` wraps the Anthropic SDK and owns the prompt template. The `createSource` server action calls it synchronously after insert, inside a try/catch — submission still succeeds if Claude is unavailable; the row keeps a null summary. The source detail page renders an "AI Summary" groupbox above the existing content, with a provenance footer showing the model id.
 
 **Tech Stack:** Next.js 16 (App Router) + TypeScript, Drizzle ORM + Postgres, `@anthropic-ai/sdk`, Vitest (unit tests with module mocking).
 
@@ -751,7 +751,7 @@ git commit -m "feat: render AI summary on source detail page"
 
 ## Self-Review Notes
 
-- **Spec coverage (vs. ADR-001 requirements):**
+- **Spec coverage (vs. ADR-002 requirements):**
   - "Generate a 3–4 bullet summary using Claude" → Task 3 (system prompt explicitly instructs 3–4 bullets).
   - "Store summary alongside source" → Task 2 (schema), Task 4 (write).
   - "Show that the summary is system-generated incl. model" → Task 5 (groupbox title "AI Summary" + provenance footer with `summaryModel`).

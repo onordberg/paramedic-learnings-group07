@@ -5,6 +5,8 @@ import { createTopic, type CreateTopicState } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { AREA_COLORS } from "@/app/_lib/area-badge";
 import { FormError } from "@/app/_components/FormError";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 const AREAS = ["Clinical", "Operational", "Safety", "Administrative"] as const;
 
@@ -27,6 +29,7 @@ export default function NewTopicPage() {
 
   return (
     <div style={{ maxWidth: "600px" }}>
+      <SetClippyContext context={buildPageContext("topic-new")} />
       <div className="win-raised" style={{ overflow: "hidden" }}>
         {/* Dialog title bar */}
         <div className="win-titlebar" style={{ fontSize: "11px" }}>

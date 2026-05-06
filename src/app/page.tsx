@@ -6,6 +6,8 @@ import { Suspense } from "react";
 import { NewTopicForm } from "@/app/_components/NewTopicForm";
 import { SearchAndFilter } from "@/app/_components/SearchAndFilter";
 import { AREA_BADGE } from "@/app/_lib/area-badge";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 type SearchParams = Promise<{ q?: string; area?: string }>;
 
@@ -51,6 +53,7 @@ export default async function Home({
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "8px", alignItems: "start" }}>
+      <SetClippyContext context={buildPageContext("home")} />
       {/* Left panel: topic list */}
       <div>
         {/* Search & filter */}

@@ -280,6 +280,13 @@ body {
   margin: 6px 0;
 }
 
+/* ── Clippy ── */
+
+@keyframes clippy-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 /* ── Scrollbars (Chromium only) ── */
 
 ::-webkit-scrollbar {

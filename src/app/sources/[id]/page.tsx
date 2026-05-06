@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SOURCE_TYPE_LABELS } from "@/app/_lib/source-type-labels";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 export default async function SourcePage({
   params,
@@ -34,6 +36,13 @@ export default async function SourcePage({
 
   return (
     <div style={{ maxWidth: "700px" }}>
+      <SetClippyContext
+        context={buildPageContext("source-detail", {
+          title: row.title,
+          sourceType: row.sourceType,
+          content: row.content.slice(0, 400),
+        })}
+      />
       <div className="win-raised" style={{ overflow: "hidden" }}>
         <div className="win-titlebar">
           <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>

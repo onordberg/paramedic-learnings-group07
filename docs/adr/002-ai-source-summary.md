@@ -1,4 +1,4 @@
-# ADR-001: AI-generated source summaries
+# ADR-002: AI-generated source summaries
 
 ## Status
 

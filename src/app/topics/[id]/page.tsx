@@ -6,6 +6,8 @@ import Link from "next/link";
 import { AREA_COLORS } from "@/app/_lib/area-badge";
 import { getSubscriberCount } from "@/app/subscription-actions";
 import { SubscribeForm } from "@/app/_components/SubscribeForm";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 export default async function TopicPage({
   params,
@@ -40,6 +42,13 @@ export default async function TopicPage({
 
   return (
     <div style={{ maxWidth: "700px" }}>
+      <SetClippyContext
+        context={buildPageContext("topic-detail", {
+          title: topic.title,
+          summary: topic.summary,
+          guidance: topic.guidance,
+        })}
+      />
       {/* Window chrome */}
       <div className="win-raised" style={{ overflow: "hidden" }}>
         <div className="win-titlebar">

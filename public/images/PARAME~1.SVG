@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges" width="256" height="256">
+  <!-- Parametric Learning app icon - Windows 3.11 / Win95 style -->
+  <!-- Concept: medical heart monitor showing an EKG trace with a red-cross badge -->
+
+  <!-- Outer raised button bezel -->
+  <rect x="0" y="0" width="32" height="32" fill="#C0C0C0"/>
+  <rect x="0" y="0" width="32" height="1" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1" height="32" fill="#FFFFFF"/>
+  <rect x="0" y="31" width="32" height="1" fill="#808080"/>
+  <rect x="31" y="0" width="1" height="32" fill="#808080"/>
+
+  <!-- Sunken CRT screen frame -->
+  <rect x="2" y="2" width="28" height="1" fill="#808080"/>
+  <rect x="2" y="2" width="1" height="28" fill="#808080"/>
+  <rect x="2" y="29" width="28" height="1" fill="#FFFFFF"/>
+  <rect x="29" y="2" width="1" height="28" fill="#FFFFFF"/>
+
+  <!-- Black CRT screen background -->
+  <rect x="3" y="3" width="26" height="26" fill="#000000"/>
+
+  <!-- Dim baseline grid line on screen (phosphor afterglow) -->
+  <rect x="4" y="18" width="24" height="1" fill="#003800"/>
+
+  <!-- EKG trace (bright phosphor green) -->
+  <!-- Pre-pulse flat baseline -->
+  <rect x="4"  y="18" width="4" height="1" fill="#00FF00"/>
+  <!-- P wave (small bump) -->
+  <rect x="8"  y="17" width="1" height="1" fill="#00FF00"/>
+  <rect x="9"  y="16" width="1" height="1" fill="#00FF00"/>
+  <rect x="10" y="17" width="1" height="1" fill="#00FF00"/>
+  <!-- Back to baseline -->
+  <rect x="11" y="18" width="1" height="1" fill="#00FF00"/>
+  <!-- Q dip just below baseline -->
+  <rect x="12" y="19" width="1" height="1" fill="#00FF00"/>
+  <!-- R wave sharp rise -->
+  <rect x="13" y="10" width="1" height="10" fill="#00FF00"/>
+  <!-- Down stroke from R peak past baseline to S trough -->
+  <rect x="14" y="10" width="1" height="13" fill="#00FF00"/>
+  <!-- S trough back up to baseline -->
+  <rect x="15" y="18" width="1" height="5" fill="#00FF00"/>
+  <!-- Flat segment -->
+  <rect x="16" y="18" width="2" height="1" fill="#00FF00"/>
+  <!-- T wave (broader rounded bump) -->
+  <rect x="18" y="17" width="1" height="1" fill="#00FF00"/>
+  <rect x="19" y="16" width="3" height="1" fill="#00FF00"/>
+  <rect x="22" y="17" width="1" height="1" fill="#00FF00"/>
+  <!-- Tail flat baseline -->
+  <rect x="23" y="18" width="5" height="1" fill="#00FF00"/>
+
+  <!-- Tiny pulsing heart pixel above the QRS spike (white) -->
+  <rect x="13" y="6" width="1" height="1" fill="#FFFFFF"/>
+  <rect x="14" y="6" width="1" height="1" fill="#FFFFFF"/>
+  <rect x="12" y="7" width="3" height="1" fill="#FFFFFF"/>
+  <rect x="13" y="8" width="1" height="1" fill="#FFFFFF"/>
+
+  <!-- Heart-rate readout in upper-left (small green digits "72") -->
+  <!-- digit 7 -->
+  <rect x="5" y="5" width="3" height="1" fill="#00FF00"/>
+  <rect x="7" y="6" width="1" height="1" fill="#00FF00"/>
+  <rect x="6" y="7" width="1" height="1" fill="#00FF00"/>
+  <rect x="6" y="8" width="1" height="1" fill="#00FF00"/>
+  <!-- digit 2 -->
+  <rect x="9"  y="5" width="3" height="1" fill="#00FF00"/>
+  <rect x="11" y="6" width="1" height="1" fill="#00FF00"/>
+  <rect x="10" y="7" width="1" height="1" fill="#00FF00"/>
+  <rect x="9"  y="8" width="1" height="1" fill="#00FF00"/>
+  <rect x="9"  y="9" width="3" height="1" fill="#00FF00"/>
+
+  <!-- Medical red-cross badge in upper-right (white square + red plus) -->
+  <rect x="21" y="3" width="7" height="7" fill="#FFFFFF"/>
+  <rect x="23" y="3" width="3" height="7" fill="#FF0000"/>
+  <rect x="21" y="5" width="7" height="3" fill="#FF0000"/>
+</svg>
