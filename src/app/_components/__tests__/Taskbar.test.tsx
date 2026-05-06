@@ -174,4 +174,18 @@ describe("Taskbar", () => {
     fireEvent.click(screen.getByRole("button", { name: /paramedic learnings/i }));
     expect(screen.getByText("window content")).toBeTruthy();
   });
+
+  it("all taskbar buttons share a uniform height of 28px", () => {
+    setPathname("/");
+    renderTaskbar();
+    const topics = screen.getByRole("link", { name: /^topics$/i });
+    const notifications = screen.getByRole("link", { name: /^notifications$/i });
+    const paramedic = screen.getByRole("button", { name: /paramedic learnings/i });
+    const start = screen.getByRole("button", { name: /start/i });
+    // Asserting inline style directly — height is locked via style prop (not a class) to guarantee specificity
+    expect(topics.style.height).toBe("28px");
+    expect(notifications.style.height).toBe("28px");
+    expect(paramedic.style.height).toBe("28px");
+    expect(start.style.height).toBe("28px");
+  });
 });

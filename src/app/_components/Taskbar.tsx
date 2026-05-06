@@ -24,8 +24,8 @@ function TaskbarButton({
   const className = active
     ? "win-btn win-btn-sm win-btn-active"
     : "win-btn win-btn-sm";
-  // Padding locked on all taskbar buttons to prevent :active pseudo-class jitter
-  const style: React.CSSProperties = { padding: "2px 8px", ...extraStyle };
+  // Padding and height locked via inline style: prevents :active jitter and ensures uniform height across all buttons
+  const style: React.CSSProperties = { padding: "2px 8px", height: "28px", ...extraStyle };
 
   if (href) {
     return (
