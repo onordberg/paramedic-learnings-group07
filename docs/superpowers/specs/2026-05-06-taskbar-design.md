@@ -14,10 +14,11 @@ Add a Windows 3.11-style taskbar pinned to the bottom of the viewport, sitting o
 | App window (title bar, nav, content, status bar) | **No change** |
 | `layout.tsx` — body padding | Add `pb-8` (32px) so the teal desktop scrolls clear of the taskbar |
 | New `Taskbar` client component | New file: `src/app/_components/Taskbar.tsx` |
+| Windows logo asset | Move to `public/images/windows-logo.webp` (rename to remove spaces) |
 
 ## Taskbar anatomy (left → right)
 
-1. **Start button** — decorative, no routing. Styled as a raised Win button with a ⊞ icon.
+1. **Start button** — decorative, no routing. Styled as a raised Win button. Shows the Windows 3.1 logo (`public/images/windows-logo.webp`, rendered via Next.js `<Image>` at 20×20px) followed by the text "Start". If the logo has a white background rather than transparency, it is acceptable — consistent with the era's aesthetic.
 2. **Vertical separator** — 1px `#808080` line with 1px `#ffffff` right edge (classic Win divider).
 3. **Topics button** — routes to `/topics`. Active (current section) = sunken border + 1px padding shift matching `.win-btn-active`. Inactive = standard raised border.
 4. **Notifications button** — routes to `/notifications`. Same active/inactive logic.
