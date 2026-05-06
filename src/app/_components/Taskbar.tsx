@@ -106,7 +106,12 @@ export function Taskbar() {
         Topics
       </TaskbarButton>
 
-      <TaskbarButton href="/notifications" active={notificationsActive}>
+      <TaskbarButton
+        href="/notifications"
+        active={notificationsActive}
+        extraStyle={{ display: "flex", alignItems: "center", gap: "4px" }}
+      >
+        <Image src="/images/bell-win311.svg" alt="" width={14} height={14} />
         Notifications
       </TaskbarButton>
 
