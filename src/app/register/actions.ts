@@ -44,9 +44,13 @@ export async function register(
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
-  await db.insert(users).values({ name, email, passwordHash });
 
-  // signIn throws NEXT_REDIRECT — let it propagate
+  try {
+    await db.insert(users).values({ name, email, passwordHash });
+  } catch {
+    return { error: "An account with this email already exists" };
+  }
+
   await signIn("credentials", { email, password, redirectTo: "/" });
 
   return {};

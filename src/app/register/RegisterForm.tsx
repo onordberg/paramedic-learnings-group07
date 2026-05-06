@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { register, type RegisterState } from "./actions";
+import { FormError } from "@/app/_components/FormError";
 import Link from "next/link";
 
 const initial: RegisterState = {};
@@ -36,11 +37,7 @@ export function RegisterForm() {
               <input id="password" name="password" type="password" required className="win-input" placeholder="8+ characters" />
             </div>
 
-            {state.error && (
-              <div className="win-sunken" style={{ padding: "4px 6px", background: "#ffffff" }}>
-                <p style={{ color: "#800000", fontSize: "11px", margin: 0 }}>⚠ {state.error}</p>
-              </div>
-            )}
+            {state.error && <FormError message={state.error} />}
 
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "4px", marginTop: "4px" }}>
               <button type="submit" disabled={isPending} className="win-btn win-btn-default">
