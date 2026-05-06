@@ -32,7 +32,7 @@ export default async function RootLayout({
       >
         <div
           className="win-raised-outer w-full max-w-5xl flex flex-col"
-          style={{ minHeight: "calc(100vh - 2rem)" }}
+          style={{ minHeight: "calc(100vh - 3.5rem)" }}
         >
           <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0" }}>
             <div className="win-titlebar">
