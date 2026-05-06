@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { NotificationBadge } from "@/app/_components/NotificationBadge";
 import { auth, signOut } from "@/auth";
+import { Taskbar } from "@/app/_components/Taskbar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className="min-h-full flex flex-col items-center p-4"
+        className="min-h-full flex flex-col items-center p-4 pb-10"
         style={{
           background: "#008080",
           backgroundImage:
@@ -83,6 +84,7 @@ export default async function RootLayout({
             </footer>
           </div>
         </div>
+        <Taskbar />
       </body>
     </html>
   );
