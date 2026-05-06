@@ -19,11 +19,14 @@ function getMessageText(msg: { parts: Parameters<typeof isTextUIPart>[0][] }): s
   return msg.parts.filter(isTextUIPart).map((p) => p.text).join("");
 }
 
+type ClippyRect = { x: number; y: number; width: number; height: number };
+
 export function ClippyWidget() {
   const { isOpen, setIsOpen, pageContext } = useClippy();
   const agentRef = useRef<ClippyAgent | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
+  const [clippyRect, setClippyRect] = useState<ClippyRect | null>(null);
 
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/clippy" }), []);
 
@@ -85,6 +88,31 @@ export function ClippyWidget() {
     if (error) agentRef.current?.play("GetAttention");
   }, [error]);
 
+  // Track Clippy's DOM position so the chat box follows it.
+  // clippyjs appends its element directly to document.body with no class,
+  // so we read position via the agent's internal _el rather than a selector.
+  useEffect(() => {
+    let rafId: number;
+    let lastX = -1;
+    let lastY = -1;
+
+    function track() {
+      const el = (agentRef.current as unknown as { _el?: HTMLElement } | null)?._el;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.x !== lastX || rect.y !== lastY) {
+          lastX = rect.x;
+          lastY = rect.y;
+          setClippyRect({ x: rect.x, y: rect.y, width: rect.width, height: rect.height });
+        }
+      }
+      rafId = requestAnimationFrame(track);
+    }
+
+    rafId = requestAnimationFrame(track);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
   // Scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView?.({ behavior: "smooth" });
@@ -104,13 +132,20 @@ export function ClippyWidget() {
     }
   }
 
+  const chatBoxWidth = 264;
+  const chatBoxPos = clippyRect
+    ? {
+        position: "fixed" as const,
+        left: `${Math.max(0, clippyRect.x - chatBoxWidth - 8)}px`,
+        top: `${clippyRect.y}px`,
+      }
+    : { position: "absolute" as const, bottom: "28px", right: "8px" };
+
   return (
     <div
       style={{
-        position: "absolute",
-        bottom: "28px",
-        right: "8px",
-        width: "264px",
+        ...chatBoxPos,
+        width: `${chatBoxWidth}px`,
         zIndex: 50,
         display: isOpen ? "flex" : "none",
         flexDirection: "column",
