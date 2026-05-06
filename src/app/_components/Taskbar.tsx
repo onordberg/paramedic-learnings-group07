@@ -13,14 +13,12 @@ function TaskbarButton({
   active,
   children,
   extraStyle,
-  onBeforeNavigate,
   onClick,
 }: {
   href?: string;
   active?: boolean;
   children: React.ReactNode;
   extraStyle?: React.CSSProperties;
-  onBeforeNavigate?: () => void;
   onClick?: () => void;
 }) {
   const className = active
@@ -31,7 +29,7 @@ function TaskbarButton({
 
   if (href) {
     return (
-      <Link href={href} className={className} style={style} onClick={onBeforeNavigate}>
+      <Link href={href} className={className} style={style} onClick={onClick}>
         {children}
       </Link>
     );
@@ -152,7 +150,7 @@ export function Taskbar() {
         </TaskbarButton>
       )}
 
-      <TaskbarButton href="/topics" active={topicsActive} onBeforeNavigate={restore}>
+      <TaskbarButton href="/topics" active={topicsActive} onClick={restore}>
         Topics
       </TaskbarButton>
 
@@ -160,7 +158,7 @@ export function Taskbar() {
         href="/notifications"
         active={notificationsActive}
         extraStyle={{ display: "flex", alignItems: "center", gap: "4px" }}
-        onBeforeNavigate={restore}
+        onClick={restore}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/bell-win311.svg" alt="" width={20} height={20} style={{ imageRendering: "pixelated" }} />
