@@ -6,7 +6,6 @@ const validInput = {
   summary: "Guide for managing ROSC",
   guidance: "Step 1: confirm ROSC...",
   area: "Clinical" as const,
-  createdBy: "J. Hansen",
 };
 
 describe("CreateTopicSchema", () => {
@@ -49,12 +48,6 @@ describe("CreateTopicSchema", () => {
   it("rejects missing area", () => {
     const result = CreateTopicSchema.safeParse({ ...validInput, area: undefined });
     expect(result.success).toBe(false);
-  });
-
-  it("rejects missing createdBy", () => {
-    const result = CreateTopicSchema.safeParse({ ...validInput, createdBy: "" });
-    expect(result.success).toBe(false);
-    expect(result.error?.issues[0].message).toBe("Your name is required");
   });
 
   it("accepts all four area values", () => {

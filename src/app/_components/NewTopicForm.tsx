@@ -48,7 +48,6 @@ export function NewTopicForm() {
         <FormField label="Summary:" name="summary" placeholder="One-line description" />
         <FormField label="Guidance:" name="guidance" placeholder="Detailed operational guidance…" rows={5} />
         <FormField label="Rationale (optional):" name="rationale" placeholder="Why does this guidance exist?" rows={3} />
-        <FormField label="Your name:" name="createdBy" placeholder="e.g. Anna Larsen" />
 
         {state.error && (
           <div className="win-sunken" style={{ padding: "4px 6px", background: "#ffffff" }}>
