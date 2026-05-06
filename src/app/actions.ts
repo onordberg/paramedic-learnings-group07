@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { CreateTopicSchema } from "@/app/_lib/create-topic-schema";
 import { createTopicNotification } from "@/app/subscription-actions";
+import { auth } from "@/auth";
 import { z } from "zod";
 
 export type CreateTopicState = {
@@ -17,20 +18,25 @@ export async function createTopic(
   _prevState: CreateTopicState,
   formData: FormData
 ): Promise<CreateTopicState> {
+  const session = await auth();
+  if (!session) return { error: "Not authenticated" };
+
   const result = CreateTopicSchema.safeParse({
     title: formData.get("title"),
     summary: formData.get("summary"),
     guidance: formData.get("guidance"),
     rationale: formData.get("rationale") || undefined,
     area: formData.get("area"),
-    createdBy: formData.get("createdBy"),
   });
 
   if (!result.success) {
     return { error: result.error.issues[0].message };
   }
 
-  await db.insert(topics).values(result.data);
+  await db.insert(topics).values({
+    ...result.data,
+    createdBy: session.user.name,
+  });
   revalidatePath("/");
   return { success: true };
 }
@@ -52,6 +58,9 @@ export async function updateTopic(
   _prevState: UpdateTopicState,
   formData: FormData
 ): Promise<UpdateTopicState> {
+  const session = await auth();
+  if (!session) return { error: "Not authenticated" };
+
   const result = UpdateTopicSchema.safeParse({
     id: formData.get("id"),
     title: formData.get("title"),
@@ -66,7 +75,6 @@ export async function updateTopic(
 
   const { id, ...fields } = result.data;
 
-  // Only notify subscribers when guidance text actually changes
   const [current] = await db
     .select({ guidance: topics.guidance })
     .from(topics)
