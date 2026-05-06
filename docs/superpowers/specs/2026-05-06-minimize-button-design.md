@@ -14,9 +14,8 @@ Only the **outer app window** (the `win-raised` shell in `layout.tsx`) gets a wo
 
 ### Minimize
 - User clicks `─` in the outer title bar
-- The nav bar, main content area, and footer disappear (`WindowBody` renders `null`)
-- The title bar strip remains visible
-- The taskbar remains visible at the bottom
+- The entire window disappears — title bar, nav bar, main content area, and footer all render `null`
+- Only the teal desktop background and the taskbar remain visible
 
 ### Restore
 - User clicks any taskbar button (Topics or Notifications)
@@ -34,16 +33,15 @@ Only the **outer app window** (the `win-raised` shell in `layout.tsx`) gets a wo
 ```
 layout.tsx (server component — calls auth())
 └── <WindowStateProvider>           "use client" — owns isMinimized state
-    └── <div.win-raised-outer>
-        └── <div.win-raised>
-            ├── <div.win-titlebar>
-            │   └── <MinimizeButton />    "use client" — calls minimize()
-            ├── <WindowBody>              "use client" — renders null when minimized
-            │   ├── <nav.win-menubar>
-            │   ├── <main>
-            │   └── <footer.win-statusbar>
-            └── (nothing when minimized)
-└── <Taskbar />                     already "use client" — calls restore() on click
+    ├── <WindowBody>                 "use client" — renders null when minimized
+    │   └── <div.win-raised-outer>
+    │       └── <div.win-raised>
+    │           ├── <div.win-titlebar>
+    │           │   └── <MinimizeButton />    "use client" — calls minimize()
+    │           ├── <nav.win-menubar>
+    │           ├── <main>
+    │           └── <footer.win-statusbar>
+    └── <Taskbar />                 already "use client" — calls restore() on click
 ```
 
 ## Files
@@ -63,7 +61,7 @@ Single `"use client"` file exporting four things:
 
 Two targeted changes:
 1. Replace the decorative `─` div in the title bar with `<MinimizeButton />`
-2. Wrap `<nav>`, `<main>`, and `<footer>` in `<WindowBody>`, and wrap the full body content in `<WindowStateProvider>`
+2. Wrap the entire `div.win-raised-outer` block in `<WindowBody>`, and wrap the full body content in `<WindowStateProvider>`. `<Taskbar />` stays outside `<WindowBody>` so it remains visible when minimized.
 
 ### Modified: `src/app/_components/Taskbar.tsx`
 
