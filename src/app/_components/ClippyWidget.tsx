@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, isTextUIPart } from "ai";
 import { useClippy } from "./ClippyProvider";
 
 type ClippyAgent = {
@@ -15,11 +15,8 @@ type ClippyAgent = {
   dispose(): void;
 };
 
-function getMessageText(parts: { type: string; text?: string }[]): string {
-  return parts
-    .filter((p) => p.type === "text" && p.text)
-    .map((p) => p.text!)
-    .join("");
+function getMessageText(msg: { parts: Parameters<typeof isTextUIPart>[0][] }): string {
+  return msg.parts.filter(isTextUIPart).map((p) => p.text).join("");
 }
 
 export function ClippyWidget() {
@@ -28,9 +25,9 @@ export function ClippyWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
 
-  const { messages, sendMessage, status, error } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/clippy" }),
-  });
+  const transport = useMemo(() => new DefaultChatTransport({ api: "/api/clippy" }), []);
+
+  const { messages, sendMessage, status, error } = useChat({ transport });
 
   const isStreaming = status === "streaming" || status === "submitted";
 
@@ -173,9 +170,7 @@ export function ClippyWidget() {
           )}
 
           {messages.map((msg) => {
-            const text = getMessageText(
-              msg.parts as { type: string; text?: string }[]
-            );
+            const text = getMessageText(msg);
             if (!text) return null;
             const isUser = msg.role === "user";
             const isLastAssistant =

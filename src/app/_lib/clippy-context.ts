@@ -4,7 +4,9 @@ export type TopicData = {
   guidance: string;
 };
 
-export function buildPageContext(page: string, topic?: TopicData): string {
+type PageKey = "topic-detail" | "topic-new" | "topic-list" | (string & {});
+
+export function buildPageContext(page: PageKey, topic?: TopicData): string {
   if (page === "topic-detail") {
     if (!topic) return "User is reading a topic.";
     return `User is reading the topic "${topic.title}". Summary: ${topic.summary}. Guidance: ${topic.guidance}`;

@@ -38,7 +38,7 @@ export default async function RootLayout({
           style={{ minHeight: "calc(100vh - 3.5rem)" }}
         >
           <ClippyProvider>
-          <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0", position: "relative" }}>
+            <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0", position: "relative" }}>
             <div className="win-titlebar">
               <div className="flex items-center gap-1">
                 <div className="win-titlebar-btn" style={{ fontSize: "9px" }}>─</div>
@@ -95,7 +95,7 @@ export default async function RootLayout({
               <ClippyButton />
               <span className="win-status-panel">Paramedic Learnings v1.0</span>
             </footer>
-          </div>
+            </div>
           </ClippyProvider>
         </div>
         <Taskbar />
