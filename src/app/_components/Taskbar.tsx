@@ -4,17 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { StartMenu } from "@/app/_components/StartMenu";
+import { Minesweeper } from "@/app/_components/Minesweeper";
 
 function TaskbarButton({
   href,
   active,
   children,
   extraStyle,
+  onClick,
 }: {
   href?: string;
   active?: boolean;
   children: React.ReactNode;
   extraStyle?: React.CSSProperties;
+  onClick?: () => void;
 }) {
   const className = active
     ? "win-btn win-btn-sm win-btn-active"
@@ -31,7 +35,7 @@ function TaskbarButton({
   }
 
   return (
-    <button type="button" className={className} style={style}>
+    <button type="button" className={className} style={style} onClick={onClick}>
       {children}
     </button>
   );
@@ -40,6 +44,8 @@ function TaskbarButton({
 export function Taskbar() {
   const pathname = usePathname();
   const [clock, setClock] = useState("");
+  const [startMenuOpen, setStartMenuOpen] = useState(false);
+  const [minesweeperOpen, setMinesweeperOpen] = useState(false);
 
   useEffect(() => {
     const tick = () =>
@@ -54,6 +60,8 @@ export function Taskbar() {
     return () => clearInterval(id);
   }, []);
 
+  const minesweeperActive = minesweeperOpen;
+
   const topicsActive =
     pathname === "/" ||
     pathname === "/topics" ||
@@ -61,6 +69,7 @@ export function Taskbar() {
   const notificationsActive = pathname === "/notifications";
 
   return (
+    <>
     <div
       className="win-raised"
       style={{
@@ -79,16 +88,23 @@ export function Taskbar() {
         borderRight: "none",
       }}
     >
-      {/* Start button — decorative, no routing */}
-      <TaskbarButton extraStyle={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "bold" }}>
-        <Image
-          src="/images/windows-logo.webp"
-          alt="Windows"
-          width={20}
-          height={20}
-        />
-        Start
-      </TaskbarButton>
+      {/* Start button */}
+      <div style={{ position: "relative" }}>
+        <TaskbarButton
+          active={startMenuOpen}
+          extraStyle={{ display: "flex", alignItems: "center", gap: "4px", fontWeight: "bold" }}
+          onClick={() => setStartMenuOpen((o) => !o)}
+        >
+          <Image src="/images/windows-logo.webp" alt="Windows" width={20} height={20} />
+          Start
+        </TaskbarButton>
+        {startMenuOpen && (
+          <StartMenu
+            onClose={() => setStartMenuOpen(false)}
+            onOpenMinesweeper={() => setMinesweeperOpen(true)}
+          />
+        )}
+      </div>
 
       {/* Separator */}
       <div
@@ -101,6 +117,18 @@ export function Taskbar() {
           flexShrink: 0,
         }}
       />
+
+      {minesweeperOpen && (
+        <TaskbarButton
+          active={minesweeperActive}
+          extraStyle={{ display: "flex", alignItems: "center", gap: "4px" }}
+          onClick={() => setMinesweeperOpen(false)}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/minesweeper/app-icon.svg" alt="" width={16} height={16} style={{ imageRendering: "pixelated" }} />
+          Minesweeper
+        </TaskbarButton>
+      )}
 
       <TaskbarButton href="/topics" active={topicsActive}>
         Topics
@@ -125,5 +153,8 @@ export function Taskbar() {
         {clock}
       </span>
     </div>
+
+    {minesweeperOpen && <Minesweeper onClose={() => setMinesweeperOpen(false)} />}
+    </>
   );
 }
