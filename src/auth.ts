@@ -34,6 +34,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    authorized({ auth }) {
+      return !!auth;
+    },
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
