@@ -101,6 +101,11 @@ describe("summarizeSource", () => {
     await expect(summarizeSource(baseInput)).rejects.toThrow(/text/i);
   });
 
+  it("throws when response.content is undefined", async () => {
+    messagesCreate.mockResolvedValue({ model: "m", content: undefined });
+    await expect(summarizeSource(baseInput)).rejects.toThrow(/text/i);
+  });
+
   it("throws when the first content block is not type 'text'", async () => {
     messagesCreate.mockResolvedValue({
       model: "m",

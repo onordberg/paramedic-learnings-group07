@@ -44,7 +44,7 @@ export async function summarizeSource(
     messages: [{ role: "user", content: userMessage }],
   });
 
-  const block = response.content[0];
+  const block = response.content?.[0];
   if (!block || block.type !== "text") {
     throw new Error("Anthropic response had no text content block");
   }
