@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { NotificationBadge } from "@/app/_components/NotificationBadge";
+import { auth, signOut } from "@/auth";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,11 +11,13 @@ export const metadata: Metadata = {
     "A knowledge platform for ambulance personnel: capture and improve operational guidance with AI-assisted analysis and human approval.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" className="h-full">
       <body
@@ -26,13 +29,11 @@ export default function RootLayout({
           backgroundSize: "4px 4px",
         }}
       >
-        {/* Application window */}
         <div
           className="win-raised-outer w-full max-w-5xl flex flex-col"
           style={{ minHeight: "calc(100vh - 2rem)" }}
         >
           <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0" }}>
-            {/* Title bar */}
             <div className="win-titlebar">
               <div className="flex items-center gap-1">
                 <div className="win-titlebar-btn" style={{ fontSize: "9px" }}>─</div>
@@ -44,7 +45,6 @@ export default function RootLayout({
               </div>
             </div>
 
-            {/* Menu bar / navigation */}
             <nav className="win-menubar">
               <Link href="/" className="win-menu-item">
                 <u>T</u>opics
@@ -55,17 +55,26 @@ export default function RootLayout({
               <Link href="/notifications" className="win-menu-item">
                 Notifications
               </Link>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/login" });
+                }}
+                style={{ marginLeft: "auto" }}
+              >
+                <button type="submit" className="win-menu-item">
+                  Sign Out
+                </button>
+              </form>
             </nav>
 
-            {/* Page content */}
             <main className="flex-1 p-3 overflow-auto" style={{ background: "#c0c0c0" }}>
               {children}
             </main>
 
-            {/* Status bar */}
             <footer className="win-statusbar">
               <span className="win-status-panel" style={{ flex: 1 }}>
-                Ready
+                {session ? `Signed in as ${session.user.name}` : "Ready"}
               </span>
               <Suspense fallback={null}>
                 <NotificationBadge />
