@@ -3,6 +3,8 @@ import { topics, users } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { AREA_BADGE } from "@/app/_lib/area-badge";
+import { SetClippyContext } from "@/app/_components/SetClippyContext";
+import { buildPageContext } from "@/app/_lib/clippy-context";
 
 export default async function TopicsPage() {
   const allTopics = await db
@@ -20,6 +22,7 @@ export default async function TopicsPage() {
 
   return (
     <div>
+      <SetClippyContext context={buildPageContext("topic-list")} />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
         <span style={{ fontWeight: "bold" }}>
           All Topics — {allTopics.length} {allTopics.length === 1 ? "item" : "items"}

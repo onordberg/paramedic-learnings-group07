@@ -4,6 +4,9 @@ import { Suspense } from "react";
 import { NotificationBadge } from "@/app/_components/NotificationBadge";
 import { auth, signOut } from "@/auth";
 import { Taskbar } from "@/app/_components/Taskbar";
+import { ClippyProvider } from "@/app/_components/ClippyProvider";
+import { ClippyButton } from "@/app/_components/ClippyButton";
+import { ClippyWidget } from "@/app/_components/ClippyWidget";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -34,7 +37,8 @@ export default async function RootLayout({
           className="win-raised-outer w-full max-w-5xl flex flex-col"
           style={{ minHeight: "calc(100vh - 3.5rem)" }}
         >
-          <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0" }}>
+          <ClippyProvider>
+            <div className="win-raised flex flex-col flex-1" style={{ background: "#c0c0c0", position: "relative" }}>
             <div className="win-titlebar">
               <div className="flex items-center gap-1">
                 <div className="win-titlebar-btn" style={{ fontSize: "9px" }}>─</div>
@@ -79,16 +83,20 @@ export default async function RootLayout({
               {children}
             </main>
 
+            <ClippyWidget />
+
             <footer className="win-statusbar">
               <span className="win-status-panel" style={{ flex: 1 }}>
-                {session ? `Signed in as ${session.user.name}` : "Ready"}
+                {session?.user?.name ? `Signed in as ${session.user.name}` : "Ready"}
               </span>
               <Suspense fallback={null}>
                 <NotificationBadge />
               </Suspense>
+              <ClippyButton />
               <span className="win-status-panel">Paramedic Learnings v1.0</span>
             </footer>
-          </div>
+            </div>
+          </ClippyProvider>
         </div>
         <Taskbar />
       </body>
