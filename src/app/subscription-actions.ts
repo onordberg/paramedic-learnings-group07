@@ -2,13 +2,13 @@
 
 import { db } from "@/db";
 import { subscriptions, notifications } from "@/db/schema";
-import { and, eq, isNull, count } from "drizzle-orm";
+import { eq, isNull, count } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 import { z } from "zod";
 
 const SubscribeSchema = z.object({
   topicId: z.string().uuid("Invalid topic"),
-  email: z.string().email("Enter a valid email address"),
 });
 
 export type SubscribeState = {
@@ -21,13 +21,16 @@ export async function subscribeTopic(
   _prev: SubscribeState,
   formData: FormData
 ): Promise<SubscribeState> {
+  const session = await auth();
+  if (!session) return { error: "Not authenticated" };
+
   const result = SubscribeSchema.safeParse({
     topicId: formData.get("topicId"),
-    email: formData.get("email"),
   });
   if (!result.success) return { error: result.error.issues[0].message };
 
-  const { topicId, email } = result.data;
+  const { topicId } = result.data;
+  const email = session.user.email;
 
   await db
     .insert(subscriptions)
@@ -54,7 +57,6 @@ export async function getUnreadNotificationCount(): Promise<number> {
   return row?.n ?? 0;
 }
 
-// NOTE: marks ALL notifications read globally — no per-user read state (intentional course-project simplification).
 export async function markAllNotificationsRead(): Promise<void> {
   await db
     .update(notifications)
@@ -64,7 +66,6 @@ export async function markAllNotificationsRead(): Promise<void> {
   revalidatePath("/notifications");
 }
 
-/** Called from updateTopic only when guidance content changes. */
 export async function createTopicNotification(
   topicId: string,
   topicTitle: string,

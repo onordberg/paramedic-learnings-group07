@@ -25,34 +25,20 @@ export function SubscribeForm({
       {!state.success ? (
         <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
           <input type="hidden" name="topicId" value={topicId} />
-          <div style={{ display: "flex", gap: "4px", alignItems: "flex-end" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, maxWidth: "240px" }}>
-              <label htmlFor="sub-email" className="win-label">
-                Subscribe for updates:
-              </label>
-              <input
-                id="sub-email"
-                name="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                className="win-input"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="win-btn win-btn-sm"
-              style={{ marginBottom: "2px" }}
-            >
-              {isPending ? "…" : "Subscribe"}
-            </button>
-          </div>
           {state.error && (
             <p style={{ fontSize: "11px", color: "#800000", margin: 0 }}>
               ⚠ {state.error}
             </p>
           )}
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="win-btn win-btn-sm"
+            >
+              {isPending ? "…" : "Subscribe"}
+            </button>
+          </div>
         </form>
       ) : (
         <div className="win-sunken" style={{ background: "#ffffff", padding: "4px 8px" }}>
