@@ -20,8 +20,8 @@ export default function NewSourcePage() {
   const [sourceType, setSourceType] = useState<(typeof SOURCE_TYPES)[number] | "">("");
 
   useEffect(() => {
-    if (state.success && state.id) {
-      router.push(`/sources/${state.id}`);
+    if (state.success) {
+      router.push(state.id ? `/sources/${state.id}` : "/sources");
     }
   }, [state.success, state.id, router]);
 
@@ -47,7 +47,12 @@ export default function NewSourcePage() {
                 className="win-select"
                 style={{ width: "200px" }}
                 value={sourceType}
-                onChange={(e) => setSourceType(e.target.value as (typeof SOURCE_TYPES)[number] | "")}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "" || (SOURCE_TYPES as readonly string[]).includes(v)) {
+                    setSourceType(v as (typeof SOURCE_TYPES)[number] | "");
+                  }
+                }}
               >
                 <option value="">— Select type —</option>
                 {SOURCE_TYPES.map((t) => (
@@ -67,6 +72,7 @@ export default function NewSourcePage() {
                   id="date"
                   name="date"
                   type="date"
+                  required
                   className="win-input"
                   style={{ width: "160px" }}
                 />

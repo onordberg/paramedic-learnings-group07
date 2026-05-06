@@ -1,8 +1,9 @@
 import { z } from "zod";
+import { sourceTypeEnum } from "@/db/schema";
 
 export const CreateSourceSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  sourceType: z.enum(["debrief", "research", "guideline", "incident_report"], {
+  sourceType: z.enum(sourceTypeEnum.enumValues, {
     error: "Source type is required",
   }),
   date: z.date().optional(),
