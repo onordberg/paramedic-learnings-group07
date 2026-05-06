@@ -118,11 +118,28 @@ export function ClippyWidget() {
     messagesEndRef.current?.scrollIntoView?.({ behavior: "smooth" });
   }, [messages]);
 
+  async function captureScreenshot(): Promise<{ type: "file"; mediaType: string; url: string; filename: string } | null> {
+    try {
+      const { default: html2canvas } = await import("html2canvas");
+      const canvas = await html2canvas(document.body, {
+        logging: false,
+        useCORS: true,
+        scale: 0.5,
+        ignoreElements: (el) => el.closest("[data-clippy-widget]") !== null,
+      });
+      return { type: "file", mediaType: "image/png", url: canvas.toDataURL("image/png"), filename: "screenshot.png" };
+    } catch {
+      return null;
+    }
+  }
+
   async function handleSend() {
     if (!input.trim() || isStreaming) return;
     const text = input.trim();
     setInput("");
-    await sendMessage({ text }, { body: { pageContext } });
+    const screenshot = await captureScreenshot();
+    const files = screenshot ? [screenshot] : undefined;
+    await sendMessage({ text, files }, { body: { pageContext } });
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -143,6 +160,7 @@ export function ClippyWidget() {
 
   return (
     <div
+      data-clippy-widget
       style={{
         ...chatBoxPos,
         width: `${chatBoxWidth}px`,
